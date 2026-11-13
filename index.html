@@ -4,10 +4,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Atmospheric Frontogenesis | GEOAI</title>
+<title>Atmospheric Frontogenesis Intelligence | GEOAI</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 
@@ -15,68 +14,55 @@
 :root{
 --bg:#07111e;--panel:#101e2e;--panel2:#15263a;
 --border:#293e54;--text:#e7f1fa;--muted:#8da5ba;
---cyan:#25c8e7;--blue:#438cff;--green:#42d6a0;
---orange:#ffad53;--red:#ff5967;
+--cyan:#25c8e7;--green:#42d6a0;--orange:#ffad53;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);
-font-family:Inter,Segoe UI,Arial,sans-serif;font-size:13px}
+font-family:Segoe UI,Arial,sans-serif;font-size:13px}
 button,input,select{font:inherit}
-button{cursor:pointer}
-header{
-height:76px;background:#0b1928;border-bottom:1px solid var(--border);
-display:flex;justify-content:space-between;align-items:center;padding:0 22px;
-}
+header{height:76px;background:#0b1928;border-bottom:1px solid var(--border);
+display:flex;justify-content:space-between;align-items:center;padding:0 20px}
 .brand{display:flex;align-items:center;gap:13px}
 .logo{height:43px;width:43px;border-radius:10px;background:#123a50;
 display:grid;place-items:center;color:var(--cyan);font-size:22px}
-.brand h1{font-size:15px;letter-spacing:1.2px;margin:0}
-.brand p{margin:5px 0 0;color:var(--muted);font-size:10px;letter-spacing:1px}
-.headright{display:flex;align-items:center;gap:14px}
+.brand h1{font-size:15px;letter-spacing:1px;margin:0}
+.brand p{margin:5px 0 0;color:var(--muted);font-size:10px}
+.headright{display:flex;gap:13px;align-items:center}
 .status{color:var(--green);font-size:10px}
-.tag{border:1px solid var(--border);padding:8px 10px;
-border-radius:5px;font-size:9px;color:var(--muted)}
-main{
-height:calc(100vh - 112px);
-display:grid;grid-template-columns:285px minmax(350px,1fr) 320px;
-gap:10px;padding:10px;
-}
+.tag{border:1px solid var(--border);padding:8px;border-radius:5px;
+font-size:9px;color:var(--muted)}
+main{height:calc(100vh - 112px);display:grid;
+grid-template-columns:285px minmax(350px,1fr) 320px;gap:10px;padding:10px}
 .panel{background:var(--panel);border:1px solid var(--border);
 border-radius:8px;min-height:0;overflow:hidden}
 .scroll{height:100%;overflow:auto;padding:14px}
 .scroll::-webkit-scrollbar{width:5px}
-.scroll::-webkit-scrollbar-thumb{background:#36536e;border-radius:5px}
-.section{
-font-size:10px;color:var(--cyan);letter-spacing:1.4px;
-font-weight:700;margin:8px 0 14px;padding-bottom:9px;
-border-bottom:1px solid var(--border)
-}
-.group{margin-bottom:17px}
+.scroll::-webkit-scrollbar-thumb{background:#36536e}
+.section{font-size:10px;color:var(--cyan);letter-spacing:1.3px;
+font-weight:bold;margin:8px 0 14px;padding-bottom:9px;
+border-bottom:1px solid var(--border)}
+.group{margin-bottom:16px}
 label{display:block;font-size:10px;color:var(--muted);margin-bottom:7px}
 input:not([type=checkbox]):not([type=range]),select{
 width:100%;background:#091725;color:var(--text);
-border:1px solid var(--border);padding:9px;border-radius:5px;font-size:11px;
-}
-input:focus,select:focus{outline:1px solid var(--cyan)}
+border:1px solid var(--border);padding:9px;border-radius:5px;font-size:11px}
 input[type=range]{width:100%;accent-color:var(--cyan)}
 input[type=checkbox]{accent-color:var(--cyan)}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .check{display:flex;gap:8px;align-items:center;margin:10px 0;
 font-size:11px;color:var(--text)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .btn{border:1px solid #32617a;background:#153a52;color:white;
-border-radius:5px;padding:10px;font-size:10px;font-weight:700}
+border-radius:5px;padding:10px;font-size:10px;font-weight:bold;cursor:pointer}
 .btn:hover{background:#205473}
 .primary{background:#087f9e;border-color:#159ebc}
-.btn:disabled{opacity:.4;cursor:wait}
 .full{width:100%}
 .btnrow{display:flex;gap:7px}
 .btnrow>*{flex:1}
 .note{padding:10px;background:#13273a;border-left:2px solid var(--cyan);
 font-size:10px;color:var(--muted);line-height:1.7;border-radius:4px}
-.map-panel{display:flex;flex-direction:column;min-width:0}
+.map-panel{display:flex;flex-direction:column;min-width:0;position:relative}
 .maphead{height:48px;display:flex;align-items:center;justify-content:space-between;
 padding:0 13px;border-bottom:1px solid var(--border);font-size:10px}
-.maphead strong{letter-spacing:1px}
 #map{flex:1;min-height:0;background:#101e2e}
 .mapfoot{padding:9px 12px;display:flex;justify-content:space-between;
 align-items:center;background:#0b1928;border-top:1px solid var(--border);
@@ -86,7 +72,7 @@ background:linear-gradient(90deg,#263eaa,#237fca,#20bfd1,#53d29c,#e9dc5c,#f27e42
 .playback{height:47px;background:#0b1928;border-top:1px solid var(--border);
 display:flex;align-items:center;padding:6px 10px;gap:8px}
 .playback button{background:#183a53;color:white;border:1px solid var(--border);
-border-radius:4px;padding:8px 10px}
+border-radius:4px;padding:8px 10px;cursor:pointer}
 .playback input{flex:1;min-width:40px}
 #clock{font-size:10px;min-width:110px;text-align:right;color:var(--cyan)}
 .kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -101,9 +87,6 @@ border-radius:6px;padding:10px;margin:9px 0 16px}
 border-bottom:1px solid #23384b;font-size:10px;gap:8px}
 .metric span{color:var(--muted)}
 .metric strong{text-align:right}
-footer{height:36px;display:flex;align-items:center;justify-content:space-between;
-padding:0 17px;border-top:1px solid var(--border);
-font-size:9px;color:var(--muted)}
 #loading{position:absolute;inset:0;background:#07111eeb;
 z-index:900;display:none;align-items:center;justify-content:center;
 flex-direction:column;gap:13px}
@@ -111,68 +94,72 @@ flex-direction:column;gap:13px}
 border-top-color:var(--cyan);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 #progress{font-size:11px;color:var(--cyan)}
-#tooltip{font-size:10px;line-height:1.7}
-.leaflet-container{font-family:Arial}
-.leaflet-tooltip{background:#0b1928;color:white;border:1px solid #34516a}
-.leaflet-control-attribution{font-size:8px!important}
-@media(max-width:1050px){
-main{grid-template-columns:240px minmax(300px,1fr) 270px}
-}
+footer{height:36px;display:flex;align-items:center;justify-content:space-between;
+padding:0 17px;border-top:1px solid var(--border);
+font-size:9px;color:var(--muted)}
+@media(max-width:1050px){main{grid-template-columns:240px minmax(300px,1fr) 270px}}
 @media(max-width:760px){
-body{overflow:auto}
-header{padding:10px;height:auto;min-height:70px}
+body{overflow:auto}header{height:auto;min-height:70px;padding:10px}
 .headright .tag{display:none}
 main{height:auto;display:flex;flex-direction:column}
 .map-panel{height:530px;order:-1}
-.panel{min-height:350px}
-.scroll{max-height:600px}
+.panel{min-height:350px}.scroll{max-height:600px}
 footer{height:auto;padding:12px;gap:8px;flex-wrap:wrap}
 }
 </style>
 </head>
-
 <body>
+
 <header>
- <div class="brand">
-  <div class="logo"><i class="fa-solid fa-wind"></i></div>
-  <div>
-   <h1>ATMOSPHERIC FRONTogenesis INTELLIGENCE</h1>
-   <p>GEOAI • ATMOSPHERIC DYNAMICS • 850 hPa • EARTH IN MOTION</p>
-  </div>
- </div>
- <div class="headright">
-  <span class="status" id="status">● SYSTEM READY</span>
-  <span class="tag">METEOROLOGICAL RESEARCH</span>
-  <span class="tag">GLOBAL ANALYSIS</span>
- </div>
+<div class="brand">
+<div class="logo">🌬</div>
+<div>
+<h1>ATMOSPHERIC FRONTogenesis INTELLIGENCE</h1>
+<p>GEOAI • ATMOSPHERIC DYNAMICS • 850 hPa • EARTH IN MOTION</p>
+</div>
+</div>
+<div class="headright">
+<span class="status" id="status">● SYSTEM READY</span>
+<span class="tag">METEOROLOGICAL RESEARCH</span>
+<span class="tag">GLOBAL ANALYSIS</span>
+</div>
 </header>
 
 <main>
 
-<!-- LEFT: CONTROLS -->
+<!-- CONTROL PANEL -->
 <section class="panel">
 <div class="scroll">
 
-<div class="section">01 / DATA CONFIGURATION</div>
+<div class="section">01 / ATMOSPHERIC DATA SOURCE</div>
 
 <div class="group">
-<label>ATMOSPHERIC DATA SOURCE</label>
+<label>SELECT WEATHER MODEL</label>
 <select id="source">
-<option value="forecast">Historical Forecast Archive</option>
+<option value="best_match">Best Match — Automatic model selection</option>
+<option value="ecmwf_ifs025">ECMWF IFS 0.25°</option>
+<option value="gfs_seamless">GFS Seamless</option>
 </select>
-<div class="note" style="margin-top:9px">
-Pressure-level fields are retrieved from the Open-Meteo historical forecast archive. Model provenance is displayed separately from the calculated diagnostics. This is not automatically labelled ERA5.
+<div class="note" id="sourceDescription" style="margin-top:9px">
+Select a model to configure the atmospheric data request.
 </div>
 </div>
 
+<div class="metric"><span>Requested model</span><strong id="requestedModel">Best Match</strong></div>
+<div class="metric"><span>Confirmed model</span><strong id="model">Awaiting data</strong></div>
+<div class="metric"><span>Data status</span><strong id="modelStatus">Not retrieved</strong></div>
+
+<div class="section" style="margin-top:22px">02 / TEMPORAL CONFIGURATION</div>
+
 <div class="group">
-<label>ANALYSIS START DATE</label>
+<label>START DATE</label>
 <input type="date" id="start">
-<label style="margin-top:10px">ANALYSIS END DATE</label>
+<label style="margin-top:10px">END DATE</label>
 <input type="date" id="end">
 </div>
 
-<div class="section">02 / GEOGRAPHIC EXTENT</div>
+<div class="section">03 / GEOGRAPHIC EXTENT</div>
+
 <div class="group">
 <label>ANALYSIS REGION</label>
 <select id="region">
@@ -202,9 +189,9 @@ Pressure-level fields are retrieved from the Open-Meteo historical forecast arch
 <select disabled><option>850 hPa</option></select>
 </div>
 
-<div class="section">03 / SCIENTIFIC VARIABLES</div>
+<div class="section">04 / ATMOSPHERIC VARIABLES</div>
 <div class="group">
-<label>PRIMARY ATMOSPHERIC FIELD</label>
+<label>PRIMARY FIELD</label>
 <select id="field">
 <option value="temp">Temperature (°C)</option>
 <option value="wind">Wind speed (m/s)</option>
@@ -234,14 +221,11 @@ Pressure-level fields are retrieved from the Open-Meteo historical forecast arch
 <option value="satellite">Satellite</option>
 <option value="terrain">Terrain</option>
 </select>
-</div>
-
-<div class="group">
-<label>FIELD OPACITY <span id="opacityText">75%</span></label>
+<label style="margin-top:10px">FIELD OPACITY <span id="opacityText">75%</span></label>
 <input type="range" id="opacity" min="10" max="100" value="75">
 </div>
 
-<div class="section">04 / ANIMATION SETTINGS</div>
+<div class="section">05 / ANIMATION</div>
 <div class="group">
 <label>PLAYBACK SPEED</label>
 <select id="speed">
@@ -253,118 +237,116 @@ Pressure-level fields are retrieved from the Open-Meteo historical forecast arch
 </div>
 
 <div class="btnrow">
-<button class="btn primary" id="run" style="flex:2">
-<i class="fa-solid fa-play"></i> RUN ANALYSIS
-</button>
+<button class="btn primary" id="run">▶ RUN ANALYSIS</button>
 <button class="btn" id="reset">RESET</button>
 </div>
+<button class="btn full" id="fit" style="margin-top:8px">ZOOM TO EXTENT</button>
 
-<button class="btn full" id="fit" style="margin-top:8px">ZOOM TO ANALYSIS EXTENT</button>
-
-<div class="section" style="margin-top:22px">05 / DATA EXPORT</div>
+<div class="section" style="margin-top:22px">06 / DATA EXPORT</div>
 <div class="btnrow">
 <button class="btn" id="csv">EXPORT CSV</button>
 <button class="btn" id="json">EXPORT JSON</button>
 </div>
-<button class="btn full" id="geojson" style="margin-top:8px">EXPORT CURRENT FRAME GEOJSON</button>
+<button class="btn full" id="geojson" style="margin-top:8px">EXPORT GEOJSON</button>
 
-<div class="note" style="margin-top:16px">
+<div class="note" style="margin-top:18px">
 Produced by Ansu Singhateh<br>
 GIS Analyst | GIS / Cartography Unit<br>
 GBoS GEOAI • Research and educational use
 </div>
+
 </div>
 </section>
 
-<!-- CENTRE: MAP -->
+<!-- MAP -->
 <section class="panel map-panel">
 <div class="maphead">
-<strong><i class="fa-solid fa-earth-europe"></i> 850 hPa ATMOSPHERIC FIELD</strong>
+<strong>🌍 850 hPa ATMOSPHERIC FIELD</strong>
 <span id="maptime">AWAITING DATA</span>
 </div>
 <div id="map">
- <div id="loading">
-  <div class="spinner"></div>
-  <strong>ATMOSPHERIC PROCESSING</strong>
-  <span id="progress">Initializing...</span>
- </div>
+<div id="loading">
+<div class="spinner"></div>
+<strong>ATMOSPHERIC PROCESSING</strong>
+<span id="progress">Initializing...</span>
+</div>
 </div>
 <div class="playback">
-<button id="play"><i class="fa-solid fa-play"></i></button>
-<button id="prev"><i class="fa-solid fa-backward-step"></i></button>
-<button id="next"><i class="fa-solid fa-forward-step"></i></button>
+<button id="play">▶</button>
+<button id="prev">◀|</button>
+<button id="next">|▶</button>
 <input type="range" id="timeline" min="0" max="0" value="0">
 <span id="clock">-- UTC</span>
 </div>
 <div class="mapfoot">
- <div style="display:flex;align-items:center;gap:8px">
- <span id="legendTitle">TEMPERATURE °C</span>
- <div class="grad"></div>
- <span id="legendRange">LOW – HIGH</span>
- </div>
- <span>WGS84 | 850 hPa</span>
+<div style="display:flex;align-items:center;gap:8px">
+<span id="legendTitle">TEMPERATURE °C</span>
+<div class="grad"></div>
+<span id="legendRange">LOW – HIGH</span>
+</div>
+<span>WGS84 | 850 hPa</span>
 </div>
 </section>
 
-<!-- RIGHT: ANALYTICS -->
+<!-- ANALYTICS -->
 <section class="panel">
 <div class="scroll">
 
-<div class="section">06 / LIVE ATMOSPHERIC INDICATORS</div>
+<div class="section">07 / ATMOSPHERIC INDICATORS</div>
 <div class="kpis">
- <div class="kpi"><small>MEAN TEMPERATURE</small><strong id="kTemp">--</strong><em>°C</em></div>
- <div class="kpi"><small>MAXIMUM WIND</small><strong id="kWind">--</strong><em>m/s</em></div>
- <div class="kpi"><small>MAXIMUM GRADIENT</small><strong id="kGrad">--</strong><em>K/100 km</em></div>
- <div class="kpi"><small>MAX FRONTogenesis</small><strong id="kFront">--</strong><em>K/100 km/3h</em></div>
+<div class="kpi"><small>MEAN TEMPERATURE</small><strong id="kTemp">--</strong><em>°C</em></div>
+<div class="kpi"><small>MAXIMUM WIND</small><strong id="kWind">--</strong><em>m/s</em></div>
+<div class="kpi"><small>MAXIMUM GRADIENT</small><strong id="kGrad">--</strong><em>K/100 km</em></div>
+<div class="kpi"><small>MAX FRONTogenesis</small><strong id="kFront">--</strong><em>K/100 km/3h</em></div>
 </div>
 
-<div class="section" style="margin-top:22px">07 / THERMAL DISTRIBUTION</div>
+<div class="section" style="margin-top:22px">08 / TEMPERATURE DISTRIBUTION</div>
 <div class="chartbox"><canvas id="temperatureChart"></canvas></div>
 
-<div class="section">08 / WIND FIELD ANALYSIS</div>
+<div class="section">09 / WIND FIELD ANALYSIS</div>
 <div class="chartbox"><canvas id="windChart"></canvas></div>
 
-<div class="section">09 / FRONTOGENESIS ANALYSIS</div>
+<div class="section">10 / FRONTOGENESIS ANALYSIS</div>
 <div class="chartbox"><canvas id="frontChart"></canvas></div>
 
-<div class="section">10 / TEMPORAL EVOLUTION</div>
+<div class="section">11 / TEMPORAL EVOLUTION</div>
 <div class="chartbox"><canvas id="timeChart"></canvas></div>
 
-<div class="section">11 / SPATIAL DIAGNOSTICS</div>
+<div class="section">12 / SPATIAL DIAGNOSTICS</div>
 <div class="metric"><span>Valid grid cells</span><strong id="cells">--</strong></div>
 <div class="metric"><span>Mean wind speed</span><strong id="meanWind">--</strong></div>
-<div class="metric"><span>Mean temperature gradient</span><strong id="meanGradient">--</strong></div>
+<div class="metric"><span>Mean gradient</span><strong id="meanGradient">--</strong></div>
 <div class="metric"><span>Positive frontogenesis cells</span><strong id="positive">--</strong></div>
 <div class="metric"><span>Frontolysis cells</span><strong id="negative">--</strong></div>
 <div class="metric"><span>Maximum wind direction</span><strong id="direction">--</strong></div>
 <div class="metric"><span>Current time step</span><strong id="step">--</strong></div>
-<div class="metric"><span>Model</span><strong id="model">Not retrieved</strong></div>
 
-<div class="section" style="margin-top:22px">12 / SCIENTIFIC METHODOLOGY</div>
+<div class="section" style="margin-top:22px">13 / SCIENTIFIC METHODOLOGY</div>
 <div class="note">
-<b>Temperature gradient</b><br>
-The horizontal temperature gradient is computed using spherical-coordinate finite differences.
+<b>Thermal gradient</b><br>
+Horizontal temperature derivatives calculated using spherical-coordinate finite differences.
 <br><br>
-<b>Wind components</b><br>
-Meteorological wind direction is converted to eastward and northward wind components.
+<b>Wind dynamics</b><br>
+Meteorological wind direction converted to eastward and northward wind components.
 <br><br>
 <b>Kinematic frontogenesis</b><br>
-The horizontal deformation contribution to the rate of change of the horizontal temperature gradient is calculated.
+Horizontal deformation contribution to the rate of change of the horizontal temperature gradient.
 <br><br>
 <b>Interpretation</b><br>
-Positive values indicate strengthening of the horizontal thermal gradient. Negative values indicate weakening.
+Positive values indicate strengthening of the thermal gradient; negative values indicate weakening.
 <br><br>
-This is a single-pressure-level kinematic diagnostic, not the complete three-dimensional atmospheric frontogenesis budget.
+This is not the complete three-dimensional atmospheric frontogenesis budget.
 </div>
 
-<div class="section" style="margin-top:22px">13 / DATA QUALITY</div>
-<div class="metric"><span>Missing temperature values</span><strong id="missing">--</strong></div>
+<div class="section" style="margin-top:22px">14 / DATA QUALITY</div>
+<div class="metric"><span>Missing temperatures</span><strong id="missing">--</strong></div>
 <div class="metric"><span>Missing wind values</span><strong id="missingWind">--</strong></div>
-<div class="metric"><span>Analysis grid</span><strong id="gridInfo">--</strong></div>
-<div class="metric"><span>Data source</span><strong>Open-Meteo</strong></div>
+<div class="metric"><span>Grid resolution</span><strong id="gridInfo">--</strong></div>
+<div class="metric"><span>Retrieved model</span><strong id="modelQuality">--</strong></div>
 
 </div>
 </section>
+
 </main>
 
 <footer>
@@ -374,31 +356,28 @@ This is a single-pressure-level kinematic diagnostic, not the complete three-dim
 </footer>
 
 <script>
-/* ==========================================================
-   ATMOSPHERIC FRONTogenesis INTELLIGENCE
-   Advanced browser-based meteorological dashboard
-
-   Data service:
-   Open-Meteo Historical Forecast Archive
-
-   Fields:
-   T850, Td850, RH850, U850/V850 derived,
-   Z850, omega850
-
-   Calculations:
-   Horizontal temperature gradient
-   Kinematic horizontal frontogenesis
-   Wind deformation diagnostics
-   ========================================================== */
-
 const $=id=>document.getElementById(id);
 const EARTH=6371000;
 
+const SOURCE_INFO={
+ best_match:{
+  name:'Best Match',
+  description:'Open-Meteo automatically selects an appropriate available forecast model. The returned model metadata must be checked.'
+ },
+ ecmwf_ifs025:{
+  name:'ECMWF IFS 0.25°',
+  description:'Requests the ECMWF IFS 0.25-degree model. Availability depends on the selected historical period and API endpoint.'
+ },
+ gfs_seamless:{
+  name:'GFS Seamless',
+  description:'Requests the NOAA/NCEP GFS seamless model. Availability depends on the selected period and API endpoint.'
+ }
+};
+
 const S={
- frames:[],times:[],grid:null,index:0,
- playing:false,timer:null,loaded:false,
- overlays:{},base:null,charts:{},
- metadata:null
+ frames:[],times:[],grid:null,index:0,playing:false,
+ timer:null,loaded:false,overlays:{},charts:{},
+ metadata:null,raw:null
 };
 
 const COLORS={
@@ -419,35 +398,37 @@ const REGIONS={
  europe:[60,32,-12,35]
 };
 
-function status(message,error=false){
- $('status').textContent='● '+message;
+function status(s,error=false){
+ $('status').textContent='● '+s;
  $('status').style.color=error?'#ff9d43':'#42d6a0';
 }
+
 function loading(show,message='Processing...'){
  $('loading').style.display=show?'flex':'none';
  $('progress').textContent=message;
 }
-function fail(e){
- console.error(e);
- loading(false);
- status('PROCESSING ERROR',true);
- alert(e.message||String(e));
-}
-function finite(v){return Number.isFinite(v)}
+
+function fmt(v,n=2){return Number.isFinite(v)?v.toFixed(n):'--'}
+function radians(v){return v*Math.PI/180}
 function mean(a){
- const v=a.filter(finite);
+ const v=a.filter(Number.isFinite);
  return v.length?v.reduce((x,y)=>x+y,0)/v.length:NaN;
 }
 function max(a){
- const v=a.filter(finite);
+ const v=a.filter(Number.isFinite);
  return v.length?Math.max(...v):NaN;
 }
-function min(a){
- const v=a.filter(finite);
- return v.length?Math.min(...v):NaN;
+
+function sourceChanged(){
+ const key=$('source').value;
+ const info=SOURCE_INFO[key];
+ $('sourceDescription').textContent=info.description;
+ $('requestedModel').textContent=info.name;
+ $('model').textContent='Awaiting data';
+ $('modelStatus').textContent='Not retrieved';
 }
-function fmt(v,n=2){return finite(v)?v.toFixed(n):'--'}
-function radians(v){return v*Math.PI/180}
+$('source').onchange=sourceChanged;
+sourceChanged();
 
 function setDefaultDates(){
  const d=new Date();
@@ -460,42 +441,23 @@ function setDefaultDates(){
 }
 setDefaultDates();
 
-/* ==========================================================
-   MAP
-   ========================================================== */
+/* MAP */
 
-const map=L.map('map',{zoomControl:true,preferCanvas:true})
- .setView([40,10],4);
+const map=L.map('map',{zoomControl:true,preferCanvas:true}).setView([40,10],4);
 
 const basemaps={
- dark:L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
-  attribution:'© OpenStreetMap © CARTO',maxZoom:19
- }),
- street:L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-  attribution:'© OpenStreetMap contributors',maxZoom:19
- }),
- satellite:L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{
-  attribution:'Esri World Imagery',maxZoom:19
- }),
- terrain:L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{
-  attribution:'OpenTopoMap',maxZoom:17
- })
+ dark:L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO'}),
+ street:L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}),
+ satellite:L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'Esri'}),
+ terrain:L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{attribution:'OpenTopoMap'})
 };
-
-S.base=basemaps.dark.addTo(map);
+let base=basemaps.dark.addTo(map);
 
 $('basemap').onchange=()=>{
- map.removeLayer(S.base);
- S.base=basemaps[$('basemap').value];
- S.base.addTo(map);
+ map.removeLayer(base);
+ base=basemaps[$('basemap').value];
+ base.addTo(map);
 };
-
-function clearLayers(){
- Object.values(S.overlays).forEach(x=>{
-  if(x&&map.hasLayer(x))map.removeLayer(x);
- });
- S.overlays={};
-}
 
 function setExtent(){
  map.fitBounds([
@@ -505,9 +467,7 @@ function setExtent(){
 }
 $('fit').onclick=setExtent;
 
-/* ==========================================================
-   GRID GENERATION
-   ========================================================== */
+/* GRID */
 
 function createGrid(){
  const north=Number($('north').value);
@@ -516,43 +476,34 @@ function createGrid(){
  const east=Number($('east').value);
  const step=Number($('resolution').value);
 
- if(![north,south,west,east,step].every(finite) ||
-    north<=south || east<=west ||
-    north>85 || south< -85 || west< -180 || east>180){
-  throw Error('Invalid geographic extent.');
- }
+ if(![north,south,west,east,step].every(Number.isFinite)||
+ north<=south||east<=west||north>85||south< -85||
+ west< -180||east>180)throw Error('Invalid geographic extent.');
 
  const lats=[],lons=[];
- for(let lat=north;lat>=south-1e-6;lat-=step)
-  lats.push(+lat.toFixed(5));
- for(let lon=west;lon<=east+1e-6;lon+=step)
-  lons.push(+lon.toFixed(5));
+ for(let lat=north;lat>=south-1e-6;lat-=step)lats.push(+lat.toFixed(5));
+ for(let lon=west;lon<=east+1e-6;lon+=step)lons.push(+lon.toFixed(5));
 
- const count=lats.length*lons.length;
- if(count>700)throw Error('Grid exceeds 700 points. Choose a coarser resolution or smaller study area.');
+ if(lats.length*lons.length>700)
+ throw Error('Too many grid points. Use a coarser resolution or smaller extent.');
 
  const points=[];
- lats.forEach((lat,r)=>lons.forEach((lon,c)=>{
-  points.push({lat,lon,r,c});
- }));
+ lats.forEach((lat,r)=>lons.forEach((lon,c)=>points.push({lat,lon,r,c})));
 
  return {lats,lons,points,rows:lats.length,cols:lons.length,step};
 }
 
-/* ==========================================================
-   API DATA RETRIEVAL
-   Batch requests reduce URL length and API request failures.
-   ========================================================== */
+/* API */
 
 async function fetchBatch(points,start,end){
  const variables=[
-  'temperature_850hPa',
-  'wind_speed_850hPa',
-  'wind_direction_850hPa',
-  'dew_point_850hPa',
-  'relative_humidity_850hPa',
-  'geopotential_height_850hPa',
-  'vertical_velocity_850hPa'
+ 'temperature_850hPa',
+ 'wind_speed_850hPa',
+ 'wind_direction_850hPa',
+ 'dew_point_850hPa',
+ 'relative_humidity_850hPa',
+ 'geopotential_height_850hPa',
+ 'vertical_velocity_850hPa'
  ].join(',');
 
  const params=new URLSearchParams({
@@ -566,19 +517,23 @@ async function fetchBatch(points,start,end){
   temperature_unit:'celsius'
  });
 
+ const requested=$('source').value;
+ if(requested!=='best_match')params.set('models',requested);
+
  const url='https://historical-forecast-api.open-meteo.com/v1/forecast?'+params;
+ const response=await fetch(url);
 
- const res=await fetch(url);
- if(!res.ok){
-  const t=await res.text();
-  throw Error('API error '+res.status+': '+t.slice(0,200));
+ if(!response.ok){
+  const message=await response.text();
+  throw Error('Data API error '+response.status+': '+message.slice(0,300));
  }
- const data=await res.json();
- const arr=Array.isArray(data)?data:[data];
 
- if(arr.length!==points.length){
-  throw Error('Unexpected number of returned locations: '+arr.length+' instead of '+points.length);
- }
+ const result=await response.json();
+ const arr=Array.isArray(result)?result:[result];
+
+ if(arr.length!==points.length)
+ throw Error('The API returned a different number of locations than requested.');
+
  return arr;
 }
 
@@ -586,14 +541,13 @@ async function retrieveAll(g){
  const start=$('start').value;
  const end=$('end').value;
 
- if(!start||!end||end<start)throw Error('Select a valid date range.');
-
+ if(!start||!end||end<start)throw Error('Choose a valid date range.');
  const days=(Date.parse(end)-Date.parse(start))/86400000;
- if(days>3)throw Error('Browser retrieval is limited to three days. Use Python/ERA5 for longer scientific studies.');
+ if(days>3)throw Error('The browser version supports up to three days per run.');
 
  const batches=[];
  for(let i=0;i<g.points.length;i+=20)
-  batches.push(g.points.slice(i,i+20));
+ batches.push(g.points.slice(i,i+20));
 
  let records=[];
  for(let i=0;i<batches.length;i++){
@@ -601,27 +555,24 @@ async function retrieveAll(g){
   const part=await fetchBatch(batches[i],start,end);
   records=records.concat(part);
  }
-
  return records;
 }
 
-/* ==========================================================
-   CALCULATE ATMOSPHERIC FIELDS
-   ========================================================== */
+/* WIND COMPONENTS */
 
 function windUV(speed,direction){
- if(!finite(speed)||!finite(direction))return {u:NaN,v:NaN};
+ if(!Number.isFinite(speed)||!Number.isFinite(direction))
+ return {u:NaN,v:NaN};
+
  const a=radians(direction);
- return {
-  u:-speed*Math.sin(a),
-  v:-speed*Math.cos(a)
- };
+ return {u:-speed*Math.sin(a),v:-speed*Math.cos(a)};
 }
+
+/* FRONTogenesis */
 
 function buildFrame(raw,g,t){
  const cells=raw.map((h,i)=>{
-  const p=g.points[i];
-  const v=h.hourly;
+  const p=g.points[i],v=h.hourly;
   const uv=windUV(v.wind_speed_850hPa?.[t],v.wind_direction_850hPa?.[t]);
 
   return {
@@ -643,25 +594,20 @@ function buildFrame(raw,g,t){
  for(let r=0;r<g.rows;r++){
   for(let c=0;c<g.cols;c++){
    const p=at(r,c);
-
-   let gx=NaN,gy=NaN;
-   let gradient=NaN,front=NaN;
+   let gx=NaN,gy=NaN,gradient=NaN,front=NaN;
    let divergence=NaN,vorticity=NaN;
-   let stretching=NaN,shearing=NaN;
 
    if(r>0&&r<g.rows-1&&c>0&&c<g.cols-1){
     const L=at(r,c-1),R=at(r,c+1);
     const N=at(r-1,c),D=at(r+1,c);
 
-    const dx=2*EARTH*Math.cos(radians(p.lat))*
-      radians(g.step);
+    const dx=2*EARTH*Math.cos(radians(p.lat))*radians(g.step);
     const dy=2*EARTH*radians(g.step);
 
     const valid=[L,R,N,D].every(q=>
-      [q.temp,q.u,q.v].every(finite));
+      [q.temp,q.u,q.v].every(Number.isFinite));
 
-    if(valid&&dx>0&&dy>0&&finite(p.temp)){
-     // x increases eastward; y increases northward.
+    if(valid&&dx>0&&dy>0){
      gx=(R.temp-L.temp)/dx;
      gy=(N.temp-D.temp)/dy;
 
@@ -671,108 +617,96 @@ function buildFrame(raw,g,t){
      const vy=(N.v-D.v)/dy;
 
      gradient=Math.hypot(gx,gy)*100000;
-
      const G=Math.hypot(gx,gy);
 
      if(G>1e-14){
-      // Horizontal kinematic frontogenesis:
-      // F = -[grad(T) dot (grad(V)^T grad(T))] / |grad(T)|
-      const q=-(gx*gx*ux+gx*gy*(uy+vx)+gy*gy*vy)/G;
-
-      // K m-1 s-1 -> K per 100 km per 3 hours.
-      front=q*100000*10800;
+      front=-(gx*gx*ux+gx*gy*(uy+vx)+gy*gy*vy)/G*100000*10800;
      }else front=0;
 
      divergence=ux+vy;
      vorticity=vx-uy;
-
-     stretching=(gx*gx*(ux-vy)+gx*gy*(uy+vx))/G;
-     shearing=(gx*gy*(ux-vy)-(gx*gx-gy*gy)*(uy+vx)/2)/G;
     }
    }
 
-   output.push({
-    ...p,gx,gy,gradient,front,
-    divergence,vorticity,stretching,shearing
-   });
+   output.push({...p,gx,gy,gradient,front,divergence,vorticity});
   }
  }
-
  return output;
 }
 
-/* ==========================================================
-   LOAD DATA AND CONSTRUCT TIME SERIES
-   ========================================================== */
+/* ANALYSIS */
 
 async function runAnalysis(){
  try{
   $('run').disabled=true;
   stopAnimation();
-  loading(true,'Initializing atmospheric grid');
+  S.loaded=false;
+  loading(true,'Preparing atmospheric grid');
   status('CONNECTING');
 
-  const g=createGrid();
-  S.grid=g;
+  const grid=createGrid();
+  S.grid=grid;
 
-  const raw=await retrieveAll(g);
+  const raw=await retrieveAll(grid);
   const times=raw[0]?.hourly?.time;
+  if(!times?.length)throw Error('No hourly observations returned.');
 
-  if(!times?.length)throw Error('No hourly time series returned.');
-
+  S.raw=raw;
   S.times=times;
-  S.metadata=raw[0];
-
   S.frames=[];
 
   for(let t=0;t<times.length;t++){
    loading(true,'Calculating atmospheric diagnostics '+(t+1)+' / '+times.length);
-   S.frames.push(buildFrame(raw,g,t));
+   S.frames.push(buildFrame(raw,grid,t));
   }
+
+  const meta=raw[0];
+  const requested=$('source').value;
+
+  // Location-level model metadata is shown when returned by the API.
+  const modelName=meta.model||meta.model_name||meta.generationtime_ms;
+  const displayName=typeof modelName==='string'?modelName:
+   requested==='best_match'?'Best Match — model not identified in response':
+   SOURCE_INFO[requested].name+' — requested';
+
+  $('model').textContent=displayName;
+  $('modelQuality').textContent=displayName;
+  $('modelStatus').textContent='Data retrieved';
 
   S.index=0;
   S.loaded=true;
-
   $('timeline').max=S.frames.length-1;
   $('timeline').value=0;
-
-  $('gridInfo').textContent=g.rows+' × '+g.cols;
-  $('model').textContent='Archive model blend';
-  $('missing').textContent=S.frames[0].filter(p=>!finite(p.temp)).length;
-  $('missingWind').textContent=S.frames[0].filter(p=>!finite(p.speed)).length;
+  $('gridInfo').textContent=grid.rows+' × '+grid.cols;
 
   loading(false);
   setExtent();
   updateAll();
   buildTemporalChart();
-
   status('ANALYSIS COMPLETE');
- }catch(e){
+
+ }catch(error){
+  console.error(error);
   loading(false);
   status('ANALYSIS FAILED',true);
-  console.error(e);
-  alert(e.message);
+  alert(error.message);
  }finally{
   $('run').disabled=false;
  }
 }
 
-/* ==========================================================
-   FIELD RENDERING
-   ========================================================== */
+/* MAP RENDERING */
 
-function valuesFor(frame,field){
- const key={
-  temp:'temp',wind:'speed',gradient:'gradient',
-  front:'front',dew:'dew',rh:'rh',
-  height:'height',omega:'omega'
- }[field];
- return frame.map(p=>p[key]);
+function clearLayers(){
+ Object.values(S.overlays).forEach(layer=>{
+  if(map.hasLayer(layer))map.removeLayer(layer);
+ });
+ S.overlays={};
 }
 
-function scaleColor(v,min,max,palette){
- if(!finite(v))return '#526477';
- const ratio=Math.max(0,Math.min(.9999,(v-min)/(max-min||1)));
+function scaleColor(v,lo,hi,palette){
+ if(!Number.isFinite(v))return '#526477';
+ const ratio=Math.max(0,Math.min(.9999,(v-lo)/(hi-lo||1)));
  const pos=ratio*(palette.length-1);
  const i=Math.floor(pos),f=pos-i;
  const a=palette[i].match(/\w\w/g).map(x=>parseInt(x,16));
@@ -786,40 +720,36 @@ function renderMap(){
 
  const frame=S.frames[S.index];
  const field=$('field').value;
- const values=valuesFor(frame,field);
- const valid=values.filter(finite);
- let lo=Math.min(...valid),hi=Math.max(...valid);
- if(!valid.length){lo=0;hi=1}
+ const key={temp:'temp',wind:'speed',gradient:'gradient',front:'front',
+ dew:'dew',rh:'rh',height:'height',omega:'omega'}[field];
+
+ const values=frame.map(p=>p[key]).filter(Number.isFinite);
+ let lo=values.length?Math.min(...values):0;
+ let hi=values.length?Math.max(...values):1;
  if(lo===hi)hi=lo+1;
 
  const palette=COLORS[field];
- const g=S.grid;
+ const grid=S.grid;
  const opacity=Number($('opacity').value)/100;
 
  if($('layerField').checked){
   const layer=L.layerGroup();
-  frame.forEach(p=>{
-   const val=valuesFor([p],field)[0];
-   if(!finite(val))return;
-   const color=scaleColor(val,lo,hi,palette);
-   const d=g.step/2;
 
-   const rect=L.rectangle([
-    [p.lat-d,p.lon-d],
-    [p.lat+d,p.lon+d]
-   ],{
-    color:color,weight:.35,fillColor:color,
-    fillOpacity:opacity,interactive:true
+  frame.forEach(p=>{
+   if(!Number.isFinite(p[key]))return;
+   const d=grid.step/2;
+   const color=scaleColor(p[key],lo,hi,palette);
+   const rect=L.rectangle([[p.lat-d,p.lon-d],[p.lat+d,p.lon+d]],{
+    color,weight:.35,fillColor:color,fillOpacity:opacity
    });
 
    rect.bindTooltip(
-    '<div id="tooltip"><b>850 hPa Atmospheric Cell</b><br>'+
-    'Latitude: '+p.lat.toFixed(2)+'<br>'+
-    'Longitude: '+p.lon.toFixed(2)+'<br>'+
-    'Temperature: '+fmt(p.temp)+' °C<br>'+
-    'Wind: '+fmt(p.speed)+' m/s<br>'+
-    'Gradient: '+fmt(p.gradient)+' K/100 km<br>'+
-    'Frontogenesis: '+fmt(p.front)+' K/100 km/3h</div>'
+    '850 hPa<br>Latitude: '+p.lat.toFixed(2)+
+    '<br>Longitude: '+p.lon.toFixed(2)+
+    '<br>Temperature: '+fmt(p.temp)+' °C'+
+    '<br>Wind: '+fmt(p.speed)+' m/s'+
+    '<br>Gradient: '+fmt(p.gradient)+' K/100 km'+
+    '<br>Frontogenesis: '+fmt(p.front)+' K/100 km/3h'
    );
    layer.addLayer(rect);
   });
@@ -828,51 +758,44 @@ function renderMap(){
 
  if($('layerWind').checked){
   const layer=L.layerGroup();
-
   frame.forEach(p=>{
-   if(!finite(p.u)||!finite(p.v)||!finite(p.speed))return;
-   if(p.speed<.5)return;
+   if(!Number.isFinite(p.u)||!Number.isFinite(p.v)||p.speed<.5)return;
 
-   const scale=.17;
    const angle=Math.atan2(p.u,p.v);
+   const scale=.17;
    const endLat=p.lat+Math.cos(angle)*scale;
-   const endLon=p.lon+Math.sin(angle)*scale/
-     Math.max(.35,Math.cos(radians(p.lat)));
+   const endLon=p.lon+Math.sin(angle)*scale/Math.max(.35,Math.cos(radians(p.lat)));
 
    const a=map.latLngToLayerPoint([p.lat,p.lon]);
    const b=map.latLngToLayerPoint([endLat,endLon]);
-   const anglePixel=Math.atan2(b.y-a.y,b.x-a.x);
+   const pixelAngle=Math.atan2(b.y-a.y,b.x-a.x);
    const size=5;
 
    const tip=map.layerPointToLatLng(b);
    const p1=map.layerPointToLatLng([
-    b.x-size*Math.cos(anglePixel-.55),
-    b.y-size*Math.sin(anglePixel-.55)
+    b.x-size*Math.cos(pixelAngle-.55),
+    b.y-size*Math.sin(pixelAngle-.55)
    ]);
    const p2=map.layerPointToLatLng([
-    b.x-size*Math.cos(anglePixel+.55),
-    b.y-size*Math.sin(anglePixel+.55)
+    b.x-size*Math.cos(pixelAngle+.55),
+    b.y-size*Math.sin(pixelAngle+.55)
    ]);
 
-   layer.addLayer(L.polyline([[p.lat,p.lon],tip],{
-    color:'#ffffff',weight:1.1,opacity:.85
-   }));
+   layer.addLayer(L.polyline([[p.lat,p.lon],tip],{color:'#fff',weight:1.1}));
    layer.addLayer(L.polygon([tip,p1,p2],{
     color:'#fff',weight:.5,fillColor:'#fff',fillOpacity:.9
    }));
   });
-
   S.overlays.wind=layer.addTo(map);
  }
 
  if($('layerFront').checked){
   const layer=L.layerGroup();
   frame.forEach(p=>{
-   if(!finite(p.front)||p.front<.05)return;
+   if(!Number.isFinite(p.front)||p.front<.05)return;
    layer.addLayer(L.circleMarker([p.lat,p.lon],{
     radius:Math.min(9,3+p.front),
-    color:'#ffb44c',weight:1,
-    fillColor:'#f04c40',fillOpacity:.75
+    color:'#ffb44c',weight:1,fillColor:'#f04c40',fillOpacity:.75
    }));
   });
   S.overlays.front=layer.addTo(map);
@@ -881,7 +804,7 @@ function renderMap(){
  if($('layerGradient').checked){
   const layer=L.layerGroup();
   frame.forEach(p=>{
-   if(!finite(p.gradient)||p.gradient<.2)return;
+   if(!Number.isFinite(p.gradient)||p.gradient<.2)return;
    layer.addLayer(L.circleMarker([p.lat,p.lon],{
     radius:3,color:'#5cf3d0',weight:1,
     fillColor:'#5cf3d0',fillOpacity:.7
@@ -892,19 +815,16 @@ function renderMap(){
 
  if($('layerGrid').checked){
   S.overlays.grid=L.layerGroup(frame.map(p=>
-   L.circleMarker([p.lat,p.lon],{
-    radius:2,color:'#fff',weight:1,fillOpacity:.4
-   })
+   L.circleMarker([p.lat,p.lon],{radius:2,color:'#fff',weight:1,fillOpacity:.4})
   )).addTo(map);
  }
 
  const titles={
-  temp:'TEMPERATURE °C',wind:'WIND SPEED m/s',
-  gradient:'GRADIENT K/100 km',
-  front:'FRONTOGENESIS K/100 km/3h',
-  dew:'DEWPOINT °C',rh:'RELATIVE HUMIDITY %',
-  height:'GEOPOTENTIAL HEIGHT m',
-  omega:'VERTICAL VELOCITY Pa/s'
+ temp:'TEMPERATURE °C',wind:'WIND SPEED m/s',
+ gradient:'GRADIENT K/100 km',
+ front:'FRONTOGENESIS K/100 km/3h',
+ dew:'DEWPOINT °C',rh:'RELATIVE HUMIDITY %',
+ height:'GEOPOTENTIAL HEIGHT m',omega:'VERTICAL VELOCITY Pa/s'
  };
 
  $('legendTitle').textContent=titles[field];
@@ -913,9 +833,76 @@ function renderMap(){
  $('clock').textContent=S.times[S.index]+' UTC';
 }
 
-/* ==========================================================
-   ANALYTICS
-   ========================================================== */
+/* CHARTS */
+
+function histogram(arr,bins=12){
+ const a=arr.filter(Number.isFinite);
+ if(!a.length)return {labels:[],counts:[]};
+ let lo=Math.min(...a),hi=Math.max(...a);
+ if(lo===hi)hi=lo+1;
+ const width=(hi-lo)/bins;
+ const counts=Array(bins).fill(0);
+ a.forEach(v=>counts[Math.min(bins-1,Math.floor((v-lo)/width))]++);
+ return {labels:counts.map((_,i)=>(lo+(i+.5)*width).toFixed(1)),counts};
+}
+
+function chart(id,type,labels,datasets,extra={}){
+ if(S.charts[id])S.charts[id].destroy();
+ S.charts[id]=new Chart($(id),{
+  type,data:{labels,datasets},
+  options:{
+   responsive:true,maintainAspectRatio:false,animation:false,
+   plugins:{legend:{display:datasets.length>1,labels:{color:'#a9bdce',font:{size:9}}}},
+   scales:{
+    x:{ticks:{color:'#8da5ba',font:{size:9},maxTicksLimit:7},grid:{color:'#263b50'}},
+    y:{ticks:{color:'#8da5ba',font:{size:9}},grid:{color:'#263b50'}}
+   },...extra
+  }
+ });
+}
+
+function updateCharts(){
+ const f=S.frames[S.index];
+ const t=histogram(f.map(p=>p.temp));
+ const w=histogram(f.map(p=>p.speed));
+ const h=histogram(f.map(p=>p.front));
+
+ chart('temperatureChart','bar',t.labels,[{
+ label:'Temperature frequency',data:t.counts,
+ backgroundColor:'#e9a14c',borderRadius:3
+ }]);
+
+ chart('windChart','bar',w.labels,[{
+ label:'Wind frequency',data:w.counts,
+ backgroundColor:'#28b9d4',borderRadius:3
+ }]);
+
+ chart('frontChart','bar',h.labels,[{
+ label:'Frontogenesis frequency',data:h.counts,
+ backgroundColor:'#ff9d43',borderRadius:3
+ }]);
+}
+
+function buildTemporalChart(){
+ const labels=S.times.map(t=>t.slice(11,16));
+ const temp=S.frames.map(f=>mean(f.map(p=>p.temp)));
+ const wind=S.frames.map(f=>mean(f.map(p=>p.speed)));
+ const front=S.frames.map(f=>mean(f.map(p=>p.front)));
+
+ chart('timeChart','line',labels,[
+ {label:'Mean temperature °C',data:temp,borderColor:'#e9a14c',pointRadius:1,yAxisID:'y'},
+ {label:'Mean wind m/s',data:wind,borderColor:'#28b9d4',pointRadius:1,yAxisID:'y1'},
+ {label:'Mean frontogenesis',data:front,borderColor:'#ff5967',pointRadius:1,yAxisID:'y1'}
+ ],{
+ scales:{
+ x:{ticks:{color:'#8da5ba',font:{size:8},maxTicksLimit:7},grid:{color:'#263b50'}},
+ y:{position:'left',ticks:{color:'#e9a14c',font:{size:9}},grid:{color:'#263b50'}},
+ y1:{position:'right',ticks:{color:'#28b9d4',font:{size:9}},grid:{display:false}}
+ }
+ });
+}
+
+/* INDICATORS */
 
 function updateAnalytics(){
  const f=S.frames[S.index];
@@ -929,113 +916,21 @@ function updateAnalytics(){
  $('kGrad').textContent=fmt(max(gradients));
  $('kFront').textContent=fmt(max(fronts));
 
- $('cells').textContent=f.filter(p=>finite(p.temp)&&finite(p.speed)).length;
+ $('cells').textContent=f.filter(p=>Number.isFinite(p.temp)&&Number.isFinite(p.speed)).length;
  $('meanWind').textContent=fmt(mean(winds))+' m/s';
  $('meanGradient').textContent=fmt(mean(gradients))+' K/100 km';
+ $('positive').textContent=fronts.filter(v=>Number.isFinite(v)&&v>.01).length;
+ $('negative').textContent=fronts.filter(v=>Number.isFinite(v)&&v<-.01).length;
 
- $('positive').textContent=fronts.filter(v=>finite(v)&&v>.01).length;
- $('negative').textContent=fronts.filter(v=>finite(v)&&v<-.01).length;
+ const fastest=f.filter(p=>Number.isFinite(p.speed))
+ .sort((a,b)=>b.speed-a.speed)[0];
 
- const fastest=f.filter(p=>finite(p.speed)).sort((a,b)=>b.speed-a.speed)[0];
  $('direction').textContent=fastest?fmt(fastest.direction,0)+'°':'--';
-
  $('step').textContent=(S.index+1)+' / '+S.frames.length;
-
- $('missing').textContent=temps.filter(v=>!finite(v)).length;
- $('missingWind').textContent=winds.filter(v=>!finite(v)).length;
+ $('missing').textContent=temps.filter(v=>!Number.isFinite(v)).length;
+ $('missingWind').textContent=winds.filter(v=>!Number.isFinite(v)).length;
 
  updateCharts();
-}
-
-function histogram(arr,bins=12){
- const a=arr.filter(finite);
- if(!a.length)return {labels:[],counts:[]};
-
- let lo=Math.min(...a),hi=Math.max(...a);
- if(lo===hi)hi=lo+1;
- const width=(hi-lo)/bins;
- const counts=Array(bins).fill(0);
-
- a.forEach(v=>{
-  const i=Math.min(bins-1,Math.floor((v-lo)/width));
-  counts[i]++;
- });
-
- return {
-  labels:counts.map((_,i)=>(lo+(i+.5)*width).toFixed(1)),
-  counts
- };
-}
-
-function chart(id,type,labels,datasets,extra={}){
- if(S.charts[id])S.charts[id].destroy();
-
- S.charts[id]=new Chart($(id),{
-  type,
-  data:{labels,datasets},
-  options:{
-   responsive:true,maintainAspectRatio:false,animation:false,
-   plugins:{
-    legend:{display:datasets.length>1,labels:{color:'#a9bdce',font:{size:9}}},
-    tooltip:{enabled:true}
-   },
-   scales:{
-    x:{ticks:{color:'#8da5ba',font:{size:9},maxTicksLimit:7},
-       grid:{color:'#263b50'}},
-    y:{ticks:{color:'#8da5ba',font:{size:9}},
-       grid:{color:'#263b50'}}
-   },
-   ...extra
-  }
- });
-}
-
-function updateCharts(){
- const f=S.frames[S.index];
- const t=histogram(f.map(p=>p.temp));
- const w=histogram(f.map(p=>p.speed));
- const g=histogram(f.map(p=>p.gradient));
- const h=histogram(f.map(p=>p.front));
-
- chart('temperatureChart','bar',t.labels,[{
-  label:'Temperature',data:t.counts,
-  backgroundColor:'#e9a14c',borderRadius:3
- }]);
-
- chart('windChart','bar',w.labels,[{
-  label:'Wind speed',data:w.counts,
-  backgroundColor:'#28b9d4',borderRadius:3
- }]);
-
- chart('frontChart','line',h.labels,[{
-  label:'Frontogenesis cell frequency',
-  data:h.counts,borderColor:'#ff9d43',
-  backgroundColor:'#ff9d43',tension:.3
- }]);
-
- // Distribution of gradient versus frontogenesis:
- // independent histogram is kept in the downloadable data.
-}
-
-function buildTemporalChart(){
- const labels=S.times.map(t=>t.slice(11,16));
- const temp=S.frames.map(f=>mean(f.map(p=>p.temp)));
- const wind=S.frames.map(f=>mean(f.map(p=>p.speed)));
- const front=S.frames.map(f=>mean(f.map(p=>p.front)));
-
- chart('timeChart','line',labels,[
-  {label:'Mean temperature °C',data:temp,
-   borderColor:'#e9a14c',tension:.3,pointRadius:1,yAxisID:'y'},
-  {label:'Mean wind m/s',data:wind,
-   borderColor:'#28b9d4',tension:.3,pointRadius:1,yAxisID:'y1'}
- ],{
-  plugins:{legend:{display:true,labels:{color:'#a9bdce',font:{size:9}}}},
-  scales:{
-   x:{ticks:{color:'#8da5ba',font:{size:8},maxTicksLimit:7},grid:{color:'#263b50'}},
-   y:{position:'left',ticks:{color:'#e9a14c',font:{size:9}},grid:{color:'#263b50'}},
-   y1:{position:'right',ticks:{color:'#28b9d4',font:{size:9}},grid:{display:false}}
-  }
- });
 }
 
 function updateAll(){
@@ -1044,16 +939,13 @@ function updateAll(){
  $('timeline').value=S.index;
 }
 
-/* ==========================================================
-   ANIMATION
-   ========================================================== */
+/* ANIMATION */
 
 function stopAnimation(){
  S.playing=false;
  clearInterval(S.timer);
- $('play').innerHTML='<i class="fa-solid fa-play"></i>';
+ $('play').textContent='▶';
 }
-
 function advance(){
  if(!S.loaded)return;
  if(S.index>=S.frames.length-1){
@@ -1062,20 +954,21 @@ function advance(){
  }else S.index++;
  updateAll();
 }
-
 function startAnimation(){
  if(!S.loaded)return;
  if(S.playing){stopAnimation();return}
-
  S.playing=true;
- $('play').innerHTML='<i class="fa-solid fa-pause"></i>';
-
+ $('play').textContent='Ⅱ';
  S.timer=setInterval(advance,Number($('speed').value));
 }
 
 $('play').onclick=startAnimation;
-$('prev').onclick=()=>{if(S.loaded){S.index=Math.max(0,S.index-1);updateAll()}};
-$('next').onclick=()=>{if(S.loaded){S.index=Math.min(S.frames.length-1,S.index+1);updateAll()}};
+$('prev').onclick=()=>{
+ if(S.loaded){S.index=Math.max(0,S.index-1);updateAll()}
+};
+$('next').onclick=()=>{
+ if(S.loaded){S.index=Math.min(S.frames.length-1,S.index+1);updateAll()}
+};
 $('timeline').oninput=e=>{
  if(S.loaded){S.index=Number(e.target.value);updateAll()}
 };
@@ -1083,9 +976,7 @@ $('speed').onchange=()=>{
  if(S.playing){stopAnimation();startAnimation()}
 };
 
-/* ==========================================================
-   CONTROL EVENTS
-   ========================================================== */
+/* CONTROLS */
 
 $('run').onclick=runAnalysis;
 
@@ -1099,8 +990,7 @@ $('region').onchange=()=>{
  setExtent();
 };
 
-['field','layerField','layerWind','layerFront',
- 'layerGradient','layerGrid','opacity'].forEach(id=>{
+['field','layerField','layerWind','layerFront','layerGradient','layerGrid','opacity'].forEach(id=>{
  $(id).addEventListener('change',()=>{
   if(id==='opacity')$('opacityText').textContent=$('opacity').value+'%';
   if(S.loaded)renderMap();
@@ -1121,12 +1011,12 @@ $('reset').onclick=()=>{
  $('opacity').value=75;
  $('opacityText').textContent='75%';
  $('speed').value=800;
+ $('source').value='best_match';
+ sourceChanged();
  if(S.loaded)updateAll();
 };
 
-/* ==========================================================
-   DATA EXPORT
-   ========================================================== */
+/* EXPORT */
 
 function download(content,name,type){
  const blob=new Blob([content],{type});
@@ -1136,34 +1026,27 @@ function download(content,name,type){
  setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
-function csvCell(v){
- return v===null||v===undefined?'':String(v);
-}
-
 $('csv').onclick=()=>{
  if(!S.loaded)return alert('Run the analysis first.');
 
  const headers=[
- 'time_utc','latitude','longitude','temperature_850hPa_C',
- 'wind_speed_850hPa_ms','wind_direction_850hPa_deg',
- 'dewpoint_850hPa_C','relative_humidity_850hPa_pct',
- 'geopotential_height_850hPa_m','vertical_velocity_850hPa_Pa_s',
- 'gradient_K_100km','frontogenesis_K_100km_3h',
- 'divergence_s-1','relative_vorticity_s-1'
+ 'time_utc','latitude','longitude','temperature_C',
+ 'wind_speed_ms','wind_direction_deg','dewpoint_C',
+ 'relative_humidity_pct','geopotential_height_m',
+ 'vertical_velocity_Pas','gradient_K100km',
+ 'frontogenesis_K100km_3h','divergence_s-1','vorticity_s-1'
  ];
-
  const lines=[headers.join(',')];
 
- S.frames.forEach((f,t)=>{
-  f.forEach(p=>{
+ S.frames.forEach((frame,t)=>{
+  frame.forEach(p=>{
    lines.push([
     S.times[t],p.lat,p.lon,p.temp,p.speed,p.direction,
     p.dew,p.rh,p.height,p.omega,p.gradient,p.front,
     p.divergence,p.vorticity
-   ].map(csvCell).join(','));
+   ].map(v=>v??'').join(','));
   });
  });
-
  download(lines.join('\n'),'Atmospheric_Frontogenesis_850hPa.csv','text/csv');
 };
 
@@ -1173,19 +1056,19 @@ $('json').onclick=()=>{
  const result={
   title:'Atmospheric Frontogenesis Intelligence',
   pressure_level:'850 hPa',
+  requested_model:$('source').value,
   data_source:'Open-Meteo Historical Forecast Archive',
   analysis_period:{start:$('start').value,end:$('end').value},
   grid:S.grid,
   times:S.times,
   frames:S.frames,
   methodology:{
-   gradient:'Spherical-coordinate horizontal finite differences',
-   wind:'Meteorological wind direction converted to u and v',
-   frontogenesis:'Horizontal kinematic temperature-gradient deformation term',
+   temperature_gradient:'Spherical-coordinate finite differences',
+   wind:'Meteorological wind direction converted to U and V',
+   frontogenesis:'Horizontal kinematic temperature-gradient deformation',
    units:'K per 100 km per 3 hours'
   }
  };
-
  download(JSON.stringify(result),'Atmospheric_Frontogenesis_850hPa.json','application/json');
 };
 
@@ -1208,20 +1091,16 @@ $('geojson').onclick=()=>{
    vertical_velocity:p.omega
   }
  }));
-
- download(JSON.stringify({
-  type:'FeatureCollection',features
- }),'Atmospheric_850hPa_CurrentFrame.geojson','application/geo+json');
+ download(JSON.stringify({type:'FeatureCollection',features}),
+ 'Atmospheric_850hPa_CurrentFrame.geojson','application/geo+json');
 };
 
-/* ==========================================================
-   INITIALIZATION
-   ========================================================== */
+/* INITIALIZE */
 
 map.fitBounds([[25,-15],[55,40]]);
 window.addEventListener('resize',()=>map.invalidateSize());
 status('SYSTEM READY');
-
 </script>
 </body>
 </html>
+
