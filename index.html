@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Atmospheric Frontogenesis Intelligence | GEOAI</title>
+<title>Atmospheric Frontogenesis Intelligence | GBoS GEOAI</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -12,1094 +12,1402 @@
 
 <style>
 :root{
---bg:#07111e;--panel:#101e2e;--panel2:#15263a;
---border:#293e54;--text:#e7f1fa;--muted:#8da5ba;
---cyan:#25c8e7;--green:#42d6a0;--orange:#ffad53;
+  --bg:#07111f;--panel:#0d1b2c;--panel2:#102238;--line:#20354d;
+  --text:#e6f0fb;--muted:#91a7bf;--cyan:#31c8e8;
+  --blue:#4285ff;--orange:#ffad55;--red:#ff5e66;
+  --green:#42d6a4;--purple:#b38aff;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);
-font-family:Segoe UI,Arial,sans-serif;font-size:13px}
-button,input,select{font:inherit}
-header{height:76px;background:#0b1928;border-bottom:1px solid var(--border);
-display:flex;justify-content:space-between;align-items:center;padding:0 20px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
+header{
+  padding:18px 22px;background:#091625;border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap
+}
 .brand{display:flex;align-items:center;gap:13px}
-.logo{height:43px;width:43px;border-radius:10px;background:#123a50;
-display:grid;place-items:center;color:var(--cyan);font-size:22px}
-.brand h1{font-size:15px;letter-spacing:1px;margin:0}
-.brand p{margin:5px 0 0;color:var(--muted);font-size:10px}
-.headright{display:flex;gap:13px;align-items:center}
-.status{color:var(--green);font-size:10px}
-.tag{border:1px solid var(--border);padding:8px;border-radius:5px;
-font-size:9px;color:var(--muted)}
-main{height:calc(100vh - 112px);display:grid;
-grid-template-columns:285px minmax(350px,1fr) 320px;gap:10px;padding:10px}
-.panel{background:var(--panel);border:1px solid var(--border);
-border-radius:8px;min-height:0;overflow:hidden}
-.scroll{height:100%;overflow:auto;padding:14px}
-.scroll::-webkit-scrollbar{width:5px}
-.scroll::-webkit-scrollbar-thumb{background:#36536e}
-.section{font-size:10px;color:var(--cyan);letter-spacing:1.3px;
-font-weight:bold;margin:8px 0 14px;padding-bottom:9px;
-border-bottom:1px solid var(--border)}
-.group{margin-bottom:16px}
-label{display:block;font-size:10px;color:var(--muted);margin-bottom:7px}
-input:not([type=checkbox]):not([type=range]),select{
-width:100%;background:#091725;color:var(--text);
-border:1px solid var(--border);padding:9px;border-radius:5px;font-size:11px}
-input[type=range]{width:100%;accent-color:var(--cyan)}
-input[type=checkbox]{accent-color:var(--cyan)}
-.check{display:flex;gap:8px;align-items:center;margin:10px 0;
-font-size:11px;color:var(--text)}
+.brand-mark{
+  width:43px;height:43px;border-radius:12px;background:#12324b;
+  display:grid;place-items:center;color:var(--cyan);font-size:22px
+}
+h1{font-size:19px;margin:0;letter-spacing:.5px}
+.subtitle{font-size:11px;color:var(--muted);margin-top:5px;letter-spacing:1.1px}
+.header-right{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.pill{border:1px solid var(--line);padding:7px 11px;border-radius:20px;font-size:10px;color:var(--muted)}
+.pill.live{color:var(--green);border-color:#286b5b}
+.layout{
+  display:grid;grid-template-columns:310px minmax(400px,1fr) 330px;
+  gap:12px;padding:12px;height:calc(100vh - 83px);min-height:700px
+}
+.panel{
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:#29445f transparent
+}
+.panel-inner{padding:14px}
+.section-title{
+  color:var(--cyan);font-size:10px;font-weight:800;letter-spacing:1.4px;
+  margin:5px 0 13px;text-transform:uppercase
+}
+.section{padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--line)}
+label{display:block;color:#b7c8d9;font-size:11px;margin:10px 0 6px}
+input,select,button{
+  font:inherit;color:var(--text);background:#10243a;border:1px solid #29435d;
+  border-radius:7px;padding:9px;width:100%;outline:none
+}
+input:focus,select:focus{border-color:var(--cyan)}
+input[type=range]{padding:0;accent-color:var(--cyan)}
+input[type=checkbox]{width:auto;accent-color:var(--cyan)}
+button{cursor:pointer;font-size:11px;font-weight:700;transition:.2s}
+button:hover{border-color:var(--cyan);background:#16334e}
+button.primary{background:#087f9d;border-color:#087f9d;color:white}
+button.danger{border-color:#743e4a;color:#ff9ba1}
+button:disabled{opacity:.45;cursor:not-allowed}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.btn{border:1px solid #32617a;background:#153a52;color:white;
-border-radius:5px;padding:10px;font-size:10px;font-weight:bold;cursor:pointer}
-.btn:hover{background:#205473}
-.primary{background:#087f9e;border-color:#159ebc}
-.full{width:100%}
-.btnrow{display:flex;gap:7px}
-.btnrow>*{flex:1}
-.note{padding:10px;background:#13273a;border-left:2px solid var(--cyan);
-font-size:10px;color:var(--muted);line-height:1.7;border-radius:4px}
-.map-panel{display:flex;flex-direction:column;min-width:0;position:relative}
-.maphead{height:48px;display:flex;align-items:center;justify-content:space-between;
-padding:0 13px;border-bottom:1px solid var(--border);font-size:10px}
-#map{flex:1;min-height:0;background:#101e2e}
-.mapfoot{padding:9px 12px;display:flex;justify-content:space-between;
-align-items:center;background:#0b1928;border-top:1px solid var(--border);
-font-size:9px;color:var(--muted);gap:8px}
-.grad{height:8px;width:105px;border-radius:5px;
-background:linear-gradient(90deg,#263eaa,#237fca,#20bfd1,#53d29c,#e9dc5c,#f27e42,#df354d)}
-.playback{height:47px;background:#0b1928;border-top:1px solid var(--border);
-display:flex;align-items:center;padding:6px 10px;gap:8px}
-.playback button{background:#183a53;color:white;border:1px solid var(--border);
-border-radius:4px;padding:8px 10px;cursor:pointer}
-.playback input{flex:1;min-width:40px}
-#clock{font-size:10px;min-width:110px;text-align:right;color:var(--cyan)}
-.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.kpi{padding:12px;background:#0a1826;border:1px solid var(--border);border-radius:6px}
-.kpi small{font-size:9px;color:var(--muted)}
-.kpi strong{display:block;font-size:21px;margin-top:7px}
-.kpi em{font-size:9px;color:var(--muted);font-style:normal}
-.chartbox{height:175px;background:#091725;border:1px solid var(--border);
-border-radius:6px;padding:10px;margin:9px 0 16px}
-.chartbox canvas{width:100%!important;height:100%!important}
-.metric{display:flex;justify-content:space-between;padding:9px 1px;
-border-bottom:1px solid #23384b;font-size:10px;gap:8px}
-.metric span{color:var(--muted)}
-.metric strong{text-align:right}
-#loading{position:absolute;inset:0;background:#07111eeb;
-z-index:900;display:none;align-items:center;justify-content:center;
-flex-direction:column;gap:13px}
-.spinner{height:34px;width:34px;border:3px solid #34516a;
-border-top-color:var(--cyan);border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-#progress{font-size:11px;color:var(--cyan)}
-footer{height:36px;display:flex;align-items:center;justify-content:space-between;
-padding:0 17px;border-top:1px solid var(--border);
-font-size:9px;color:var(--muted)}
-@media(max-width:1050px){main{grid-template-columns:240px minmax(300px,1fr) 270px}}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.help{font-size:10px;color:var(--muted);line-height:1.55;margin-top:7px}
+.source-card{
+  background:#0a1726;border:1px solid #29435d;border-radius:9px;
+  padding:11px;margin-top:10px
+}
+.source-row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid #1b3045}
+.source-row:last-child{border:0}
+.source-label{font-size:10px;color:var(--muted)}
+.source-value{font-size:10px;text-align:right;color:#dce9f6;font-weight:700}
+.status{color:var(--orange)}
+.status.ok{color:var(--green)}
+.status.fail{color:#ff737d}
+.checkline{display:flex;gap:8px;align-items:center;font-size:11px;color:#c2d1df;margin:9px 0}
+.checkline label{margin:0}
+.center{
+  display:flex;flex-direction:column;min-width:0;min-height:0;gap:10px
+}
+.map-card{
+  flex:1;min-height:390px;position:relative;overflow:hidden;
+  border:1px solid var(--line);border-radius:12px;background:#0a1725
+}
+#map{position:absolute;inset:0;background:#101e2d}
+.map-top{
+  position:absolute;z-index:500;left:12px;top:12px;
+  background:#091725eF;border:1px solid #29435d;border-radius:8px;
+  padding:9px 12px;pointer-events:none
+}
+.map-top strong{font-size:11px;display:block}
+.map-top span{font-size:10px;color:var(--muted)}
+.map-legend{
+  position:absolute;z-index:500;right:12px;bottom:15px;
+  background:#091725ed;border:1px solid #29435d;border-radius:8px;
+  padding:11px;max-width:190px;font-size:10px
+}
+.legend-gradient{height:9px;border-radius:5px;margin:8px 0;background:linear-gradient(90deg,#315dff,#31c8e8,#ffe46b,#ff713f,#e52f54)}
+.legend-labels{display:flex;justify-content:space-between;color:var(--muted);font-size:9px}
+.map-controls{
+  position:absolute;z-index:500;left:12px;bottom:14px;
+  display:flex;gap:6px;flex-wrap:wrap;max-width:70%
+}
+.map-controls button{width:auto;padding:7px 9px;background:#091725ed}
+.timeline{
+  border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:12px
+}
+.timeline-head{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.timeline-head strong{font-size:11px}
+.timeline-head span{font-size:10px;color:var(--cyan)}
+.timeline-controls{display:flex;gap:7px;align-items:center;margin-top:9px}
+.timeline-controls button{width:42px}
+.timeline-controls input{flex:1}
+.timeline-controls select{width:100px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px}
+.kpi small{display:block;color:var(--muted);font-size:9px;letter-spacing:.8px}
+.kpi strong{font-size:19px;display:block;margin-top:7px}
+.kpi span{font-size:9px;color:var(--muted)}
+.right-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.chart-card{background:#0a1726;border:1px solid var(--line);border-radius:9px;padding:11px}
+.chart-title{font-size:10px;font-weight:800;margin-bottom:9px;color:#cbd9e8}
+.chart-wrap{height:145px;position:relative}
+.metric-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.metric{background:#102238;border-radius:7px;padding:9px}
+.metric small{display:block;color:var(--muted);font-size:9px}
+.metric strong{display:block;font-size:13px;margin-top:5px}
+.notice{
+  background:#142b40;border-left:3px solid var(--orange);padding:10px;
+  border-radius:5px;font-size:10px;color:#c4d5e5;line-height:1.5
+}
+footer{padding:14px 20px;border-top:1px solid var(--line);font-size:10px;color:var(--muted);line-height:1.7}
+.leaflet-control-attribution{font-size:9px!important}
+@media(max-width:1150px){
+  .layout{grid-template-columns:280px minmax(350px,1fr);height:auto}
+  .right-panel{grid-column:1/-1}
+  .right-grid{grid-template-columns:1fr 1fr}
+}
 @media(max-width:760px){
-body{overflow:auto}header{height:auto;min-height:70px;padding:10px}
-.headright .tag{display:none}
-main{height:auto;display:flex;flex-direction:column}
-.map-panel{height:530px;order:-1}
-.panel{min-height:350px}.scroll{max-height:600px}
-footer{height:auto;padding:12px;gap:8px;flex-wrap:wrap}
+  .layout{display:flex;flex-direction:column;height:auto}
+  .panel{max-height:none}
+  .center{min-height:650px}
+  .map-card{min-height:470px}
+  .kpis{grid-template-columns:1fr 1fr}
+  .right-grid{grid-template-columns:1fr}
+  header{padding:14px}
 }
 </style>
 </head>
-<body>
 
+<body>
 <header>
-<div class="brand">
-<div class="logo">🌬</div>
-<div>
-<h1>ATMOSPHERIC FRONTogenesis INTELLIGENCE</h1>
-<p>GEOAI • ATMOSPHERIC DYNAMICS • 850 hPa • EARTH IN MOTION</p>
-</div>
-</div>
-<div class="headright">
-<span class="status" id="status">● SYSTEM READY</span>
-<span class="tag">METEOROLOGICAL RESEARCH</span>
-<span class="tag">GLOBAL ANALYSIS</span>
-</div>
+  <div class="brand">
+    <div class="brand-mark">◉</div>
+    <div>
+      <h1>ATMOSPHERIC FRONTogenesis INTELLIGENCE</h1>
+      <div class="subtitle">ANIMATED WEATHER DYNAMICS • 850 hPa • GEOAI</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="pill">MEDITERRANEAN & SOUTHERN EUROPE</span>
+    <span class="pill live" id="connectionBadge">● API READY</span>
+  </div>
 </header>
 
-<main>
+<main class="layout">
 
-<!-- CONTROL PANEL -->
-<section class="panel">
-<div class="scroll">
+<!-- LEFT: CONTROLS -->
+<aside class="panel">
+<div class="panel-inner">
 
-<div class="section">01 / ATMOSPHERIC DATA SOURCE</div>
+  <div class="section">
+    <div class="section-title">01 / Atmospheric data source</div>
 
-<div class="group">
-<label>SELECT WEATHER MODEL</label>
-<select id="source">
-<option value="best_match">Best Match — Automatic model selection</option>
-<option value="ecmwf_ifs025">ECMWF IFS 0.25°</option>
-<option value="gfs_seamless">GFS Seamless</option>
-</select>
-<div class="note" id="sourceDescription" style="margin-top:9px">
-Select a model to configure the atmospheric data request.
+    <label for="modelSelect">Select weather model</label>
+    <select id="modelSelect">
+      <option value="best_match">Best Match — Automatic model selection</option>
+      <option value="ecmwf_ifs025" selected>ECMWF IFS 0.25°</option>
+      <option value="gfs_seamless">GFS Seamless</option>
+    </select>
+
+    <div class="help" id="modelDescription">
+      Requests the ECMWF IFS 0.25-degree model. Availability depends on
+      the selected historical period and API endpoint.
+    </div>
+
+    <div class="source-card">
+      <div class="source-row">
+        <span class="source-label">Requested model</span>
+        <span class="source-value" id="requestedModel">ECMWF IFS 0.25°</span>
+      </div>
+      <div class="source-row">
+        <span class="source-label">Confirmed model</span>
+        <span class="source-value status" id="confirmedModel">Not confirmed</span>
+      </div>
+      <div class="source-row">
+        <span class="source-label">Data status</span>
+        <span class="source-value status" id="dataStatus">Not retrieved</span>
+      </div>
+      <div class="source-row">
+        <span class="source-label">API endpoint</span>
+        <span class="source-value">Historical Forecast</span>
+      </div>
+      <div class="source-row">
+        <span class="source-label">Temporal resolution</span>
+        <span class="source-value" id="temporalResolution">Model-dependent</span>
+      </div>
+    </div>
+    <div class="help">
+      The requested model is not automatically considered confirmed.
+      Confirmation is only shown if reliable model metadata is returned.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">02 / Study period</div>
+    <div class="grid2">
+      <div>
+        <label for="startDate">Start date</label>
+        <input type="date" id="startDate" value="2026-11-10">
+      </div>
+      <div>
+        <label for="endDate">End date</label>
+        <input type="date" id="endDate" value="2026-11-12">
+      </div>
+    </div>
+    <div class="help">Historical forecast archive. Availability varies by model and date.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">03 / Geographic domain</div>
+    <label for="regionSelect">Study area</label>
+    <select id="regionSelect">
+      <option value="med">Mediterranean basin</option>
+      <option value="west">Western Mediterranean</option>
+      <option value="east">Eastern Mediterranean</option>
+      <option value="europe">Southern & Central Europe</option>
+      <option value="custom">Custom bounding box</option>
+    </select>
+
+    <div class="grid2">
+      <div><label>North</label><input id="north" type="number" value="55" step=".5"></div>
+      <div><label>South</label><input id="south" type="number" value="25" step=".5"></div>
+      <div><label>West</label><input id="west" type="number" value="-15" step=".5"></div>
+      <div><label>East</label><input id="east" type="number" value="40" step=".5"></div>
+    </div>
+
+    <label for="gridResolution">Grid spacing</label>
+    <select id="gridResolution">
+      <option value="2.5">2.5° — Regional</option>
+      <option value="1.5" selected>1.5° — Balanced</option>
+      <option value="1">1.0° — Detailed</option>
+      <option value=".75">0.75° — High density</option>
+    </select>
+    <div class="help">Grid spacing is the sampling interval, not the native resolution of the weather model.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">04 / Atmospheric variables</div>
+    <label for="fieldSelect">Primary map variable</label>
+    <select id="fieldSelect">
+      <option value="frontogenesis">Kinematic frontogenesis</option>
+      <option value="temperature">Temperature — 850 hPa</option>
+      <option value="gradient">Temperature gradient</option>
+      <option value="wind">Wind speed — 850 hPa</option>
+      <option value="height">Geopotential height — 850 hPa</option>
+      <option value="humidity">Relative humidity — 850 hPa</option>
+    </select>
+
+    <div class="checkline"><input type="checkbox" id="showWind" checked><label for="showWind">Show wind direction indicators</label></div>
+    <div class="checkline"><input type="checkbox" id="showHotspots" checked><label for="showHotspots">Highlight frontogenesis hotspots</label></div>
+    <div class="checkline"><input type="checkbox" id="showGrid"><label for="showGrid">Show sampling grid</label></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">05 / Map configuration</div>
+    <label for="basemapSelect">Basemap</label>
+    <select id="basemapSelect">
+      <option value="dark">Dark Cartographic</option>
+      <option value="osm">OpenStreetMap</option>
+      <option value="satellite">Satellite</option>
+      <option value="terrain">Terrain</option>
+    </select>
+    <label for="opacity">Atmospheric layer opacity</label>
+    <input type="range" id="opacity" min="20" max="100" value="80">
+  </div>
+
+  <div class="section">
+    <div class="section-title">06 / Processing</div>
+    <button class="primary" id="runBtn">▶ RUN ATMOSPHERIC ANALYSIS</button>
+    <div style="height:8px"></div>
+    <button id="resetBtn">↺ RESET DASHBOARD</button>
+    <div style="height:8px"></div>
+    <div class="help" id="processingMessage">Waiting for analysis request.</div>
+    <div class="help" id="progressMessage"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">07 / Export data</div>
+    <div class="grid2">
+      <button id="csvBtn" disabled>↓ CSV</button>
+      <button id="jsonBtn" disabled>↓ JSON</button>
+    </div>
+    <div style="height:8px"></div>
+    <button id="geojsonBtn" disabled>↓ GeoJSON</button>
+  </div>
+
 </div>
-</div>
+</aside>
 
-<div class="metric"><span>Requested model</span><strong id="requestedModel">Best Match</strong></div>
-<div class="metric"><span>Confirmed model</span><strong id="model">Awaiting data</strong></div>
-<div class="metric"><span>Data status</span><strong id="modelStatus">Not retrieved</strong></div>
+<!-- CENTRE: MAP -->
+<section class="center">
+  <div class="map-card">
+    <div id="map"></div>
+    <div class="map-top">
+      <strong id="mapTitle">850 hPa Atmospheric Analysis</strong>
+      <span id="mapSubtitle">Waiting for model data</span>
+    </div>
+    <div class="map-legend">
+      <strong id="legendTitle">Frontogenesis intensity</strong>
+      <div class="legend-gradient"></div>
+      <div class="legend-labels"><span>Low</span><span>Moderate</span><span>High</span></div>
+      <div class="help" id="legendUnits">K / 100 km / 3 h (approx.)</div>
+    </div>
+    <div class="map-controls">
+      <button id="zoomDomainBtn">Zoom to domain</button>
+      <button id="clearMapBtn">Clear layers</button>
+    </div>
+  </div>
 
-<div class="section" style="margin-top:22px">02 / TEMPORAL CONFIGURATION</div>
+  <div class="timeline">
+    <div class="timeline-head">
+      <strong>TIME EVOLUTION / MODEL OUTPUT</strong>
+      <span id="timeLabel">No data loaded</span>
+    </div>
+    <div class="timeline-controls">
+      <button id="prevBtn" disabled>◀</button>
+      <button id="playBtn" disabled>▶</button>
+      <button id="nextBtn" disabled>▶</button>
+      <input id="timeSlider" type="range" min="0" max="0" value="0" disabled>
+      <select id="speedSelect">
+        <option value="1200">0.5×</option>
+        <option value="700" selected>1×</option>
+        <option value="350">2×</option>
+        <option value="150">4×</option>
+      </select>
+    </div>
+  </div>
 
-<div class="group">
-<label>START DATE</label>
-<input type="date" id="start">
-<label style="margin-top:10px">END DATE</label>
-<input type="date" id="end">
-</div>
-
-<div class="section">03 / GEOGRAPHIC EXTENT</div>
-
-<div class="group">
-<label>ANALYSIS REGION</label>
-<select id="region">
-<option value="med">Mediterranean & Southern Europe</option>
-<option value="west">Western Mediterranean</option>
-<option value="east">Eastern Mediterranean</option>
-<option value="europe">Europe</option>
-<option value="custom">Custom geographic extent</option>
-</select>
-<div class="grid2" style="margin-top:9px">
-<div><label>NORTH</label><input type="number" id="north" value="55"></div>
-<div><label>SOUTH</label><input type="number" id="south" value="25"></div>
-<div><label>WEST</label><input type="number" id="west" value="-15"></div>
-<div><label>EAST</label><input type="number" id="east" value="40"></div>
-</div>
-</div>
-
-<div class="group">
-<label>GRID RESOLUTION</label>
-<select id="resolution">
-<option value="2.5">2.5° – Rapid</option>
-<option value="1.5" selected>1.5° – Standard</option>
-<option value="1">1.0° – Detailed</option>
-<option value="0.75">0.75° – High detail</option>
-</select>
-<label style="margin-top:10px">PRESSURE LEVEL</label>
-<select disabled><option>850 hPa</option></select>
-</div>
-
-<div class="section">04 / ATMOSPHERIC VARIABLES</div>
-<div class="group">
-<label>PRIMARY FIELD</label>
-<select id="field">
-<option value="temp">Temperature (°C)</option>
-<option value="wind">Wind speed (m/s)</option>
-<option value="gradient">Temperature gradient (K/100 km)</option>
-<option value="front">Frontogenesis (K/100 km/3h)</option>
-<option value="dew">Dewpoint (°C)</option>
-<option value="rh">Relative humidity (%)</option>
-<option value="height">Geopotential height (m)</option>
-<option value="omega">Vertical velocity (Pa/s)</option>
-</select>
-</div>
-
-<div class="group">
-<label>MAP OVERLAYS</label>
-<label class="check"><input type="checkbox" id="layerField" checked> Atmospheric field</label>
-<label class="check"><input type="checkbox" id="layerWind" checked> Wind vectors</label>
-<label class="check"><input type="checkbox" id="layerFront" checked> Frontogenesis hotspots</label>
-<label class="check"><input type="checkbox" id="layerGradient"> Temperature gradient</label>
-<label class="check"><input type="checkbox" id="layerGrid"> Analysis grid</label>
-</div>
-
-<div class="group">
-<label>BASEMAP</label>
-<select id="basemap">
-<option value="dark">Dark Cartographic</option>
-<option value="street">OpenStreetMap</option>
-<option value="satellite">Satellite</option>
-<option value="terrain">Terrain</option>
-</select>
-<label style="margin-top:10px">FIELD OPACITY <span id="opacityText">75%</span></label>
-<input type="range" id="opacity" min="10" max="100" value="75">
-</div>
-
-<div class="section">05 / ANIMATION</div>
-<div class="group">
-<label>PLAYBACK SPEED</label>
-<select id="speed">
-<option value="1600">Slow</option>
-<option value="800" selected>Normal</option>
-<option value="350">Fast</option>
-</select>
-<label class="check"><input type="checkbox" id="loop" checked> Loop animation</label>
-</div>
-
-<div class="btnrow">
-<button class="btn primary" id="run">▶ RUN ANALYSIS</button>
-<button class="btn" id="reset">RESET</button>
-</div>
-<button class="btn full" id="fit" style="margin-top:8px">ZOOM TO EXTENT</button>
-
-<div class="section" style="margin-top:22px">06 / DATA EXPORT</div>
-<div class="btnrow">
-<button class="btn" id="csv">EXPORT CSV</button>
-<button class="btn" id="json">EXPORT JSON</button>
-</div>
-<button class="btn full" id="geojson" style="margin-top:8px">EXPORT GEOJSON</button>
-
-<div class="note" style="margin-top:18px">
-Produced by Ansu Singhateh<br>
-GIS Analyst | GIS / Cartography Unit<br>
-GBoS GEOAI • Research and educational use
-</div>
-
-</div>
+  <div class="kpis">
+    <div class="kpi"><small>GRID POINTS</small><strong id="kpiPoints">—</strong><span>Retrieved locations</span></div>
+    <div class="kpi"><small>TIME STEPS</small><strong id="kpiTimes">—</strong><span>Available timestamps</span></div>
+    <div class="kpi"><small>MAX FRONTogenesis</small><strong id="kpiFront">—</strong><span>K / 100 km / 3 h</span></div>
+    <div class="kpi"><small>MEAN WIND SPEED</small><strong id="kpiWind">—</strong><span>km/h at 850 hPa</span></div>
+  </div>
 </section>
 
-<!-- MAP -->
-<section class="panel map-panel">
-<div class="maphead">
-<strong>🌍 850 hPa ATMOSPHERIC FIELD</strong>
-<span id="maptime">AWAITING DATA</span>
+<!-- RIGHT: ANALYTICS -->
+<aside class="panel right-panel">
+<div class="panel-inner">
+  <div class="section-title">08 / Atmospheric analytics</div>
+
+  <div class="metric-list">
+    <div class="metric"><small>850 hPa mean temperature</small><strong id="mTemp">—</strong></div>
+    <div class="metric"><small>Temperature gradient</small><strong id="mGradient">—</strong></div>
+    <div class="metric"><small>Mean relative humidity</small><strong id="mHumidity">—</strong></div>
+    <div class="metric"><small>Mean geopotential height</small><strong id="mHeight">—</strong></div>
+    <div class="metric"><small>Maximum wind speed</small><strong id="mMaxWind">—</strong></div>
+    <div class="metric"><small>Hotspot grid cells</small><strong id="mHotspots">—</strong></div>
+  </div>
+
+  <div class="right-grid" style="margin-top:12px">
+    <div class="chart-card">
+      <div class="chart-title">TEMPERATURE DISTRIBUTION — 850 hPa</div>
+      <div class="chart-wrap"><canvas id="tempChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">FRONTOGENESIS FREQUENCY</div>
+      <div class="chart-wrap"><canvas id="frontChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">TEMPORAL EVOLUTION</div>
+      <div class="chart-wrap"><canvas id="timeChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">WIND SPEED DISTRIBUTION</div>
+      <div class="chart-wrap"><canvas id="windChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="section" style="margin-top:14px">
+    <div class="section-title">09 / Scientific methodology</div>
+    <div class="notice">
+      Frontogenesis is estimated from horizontal temperature gradients
+      and horizontal wind deformation at 850 hPa. The diagnostic is a
+      simplified kinematic approximation, not a complete three-dimensional
+      thermodynamic frontogenesis calculation.
+    </div>
+    <div class="help">
+      Temperature gradient is calculated from neighbouring grid points.
+      Wind speed and direction are converted to horizontal wind components.
+      Finite differences are used to estimate horizontal deformation.
+      Values are sensitive to grid spacing, missing data and model resolution.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">10 / Data integrity</div>
+    <div class="source-row"><span class="source-label">Retrieved records</span><span class="source-value" id="integrityRecords">0</span></div>
+    <div class="source-row"><span class="source-label">Missing temperature</span><span class="source-value" id="integrityMissing">—</span></div>
+    <div class="source-row"><span class="source-label">Time interval</span><span class="source-value" id="integrityInterval">—</span></div>
+    <div class="source-row"><span class="source-label">Model metadata</span><span class="source-value" id="integrityModel">Not supplied</span></div>
+  </div>
 </div>
-<div id="map">
-<div id="loading">
-<div class="spinner"></div>
-<strong>ATMOSPHERIC PROCESSING</strong>
-<span id="progress">Initializing...</span>
-</div>
-</div>
-<div class="playback">
-<button id="play">▶</button>
-<button id="prev">◀|</button>
-<button id="next">|▶</button>
-<input type="range" id="timeline" min="0" max="0" value="0">
-<span id="clock">-- UTC</span>
-</div>
-<div class="mapfoot">
-<div style="display:flex;align-items:center;gap:8px">
-<span id="legendTitle">TEMPERATURE °C</span>
-<div class="grad"></div>
-<span id="legendRange">LOW – HIGH</span>
-</div>
-<span>WGS84 | 850 hPa</span>
-</div>
-</section>
-
-<!-- ANALYTICS -->
-<section class="panel">
-<div class="scroll">
-
-<div class="section">07 / ATMOSPHERIC INDICATORS</div>
-<div class="kpis">
-<div class="kpi"><small>MEAN TEMPERATURE</small><strong id="kTemp">--</strong><em>°C</em></div>
-<div class="kpi"><small>MAXIMUM WIND</small><strong id="kWind">--</strong><em>m/s</em></div>
-<div class="kpi"><small>MAXIMUM GRADIENT</small><strong id="kGrad">--</strong><em>K/100 km</em></div>
-<div class="kpi"><small>MAX FRONTogenesis</small><strong id="kFront">--</strong><em>K/100 km/3h</em></div>
-</div>
-
-<div class="section" style="margin-top:22px">08 / TEMPERATURE DISTRIBUTION</div>
-<div class="chartbox"><canvas id="temperatureChart"></canvas></div>
-
-<div class="section">09 / WIND FIELD ANALYSIS</div>
-<div class="chartbox"><canvas id="windChart"></canvas></div>
-
-<div class="section">10 / FRONTOGENESIS ANALYSIS</div>
-<div class="chartbox"><canvas id="frontChart"></canvas></div>
-
-<div class="section">11 / TEMPORAL EVOLUTION</div>
-<div class="chartbox"><canvas id="timeChart"></canvas></div>
-
-<div class="section">12 / SPATIAL DIAGNOSTICS</div>
-<div class="metric"><span>Valid grid cells</span><strong id="cells">--</strong></div>
-<div class="metric"><span>Mean wind speed</span><strong id="meanWind">--</strong></div>
-<div class="metric"><span>Mean gradient</span><strong id="meanGradient">--</strong></div>
-<div class="metric"><span>Positive frontogenesis cells</span><strong id="positive">--</strong></div>
-<div class="metric"><span>Frontolysis cells</span><strong id="negative">--</strong></div>
-<div class="metric"><span>Maximum wind direction</span><strong id="direction">--</strong></div>
-<div class="metric"><span>Current time step</span><strong id="step">--</strong></div>
-
-<div class="section" style="margin-top:22px">13 / SCIENTIFIC METHODOLOGY</div>
-<div class="note">
-<b>Thermal gradient</b><br>
-Horizontal temperature derivatives calculated using spherical-coordinate finite differences.
-<br><br>
-<b>Wind dynamics</b><br>
-Meteorological wind direction converted to eastward and northward wind components.
-<br><br>
-<b>Kinematic frontogenesis</b><br>
-Horizontal deformation contribution to the rate of change of the horizontal temperature gradient.
-<br><br>
-<b>Interpretation</b><br>
-Positive values indicate strengthening of the thermal gradient; negative values indicate weakening.
-<br><br>
-This is not the complete three-dimensional atmospheric frontogenesis budget.
-</div>
-
-<div class="section" style="margin-top:22px">14 / DATA QUALITY</div>
-<div class="metric"><span>Missing temperatures</span><strong id="missing">--</strong></div>
-<div class="metric"><span>Missing wind values</span><strong id="missingWind">--</strong></div>
-<div class="metric"><span>Grid resolution</span><strong id="gridInfo">--</strong></div>
-<div class="metric"><span>Retrieved model</span><strong id="modelQuality">--</strong></div>
-
-</div>
-</section>
-
+</aside>
 </main>
 
 <footer>
-<span>ATMOSPHERIC FRONTogenesis INTELLIGENCE</span>
-<span>Produced by Ansu Singhateh | GIS / Cartography Unit | Gambia Bureau of Statistics</span>
-<span>GBoS GEOAI • Research and educational use</span>
+  <strong>ATMOSPHERIC FRONTogenesis INTELLIGENCE</strong><br>
+  Produced by Ansu Singhateh | GIS / Cartography Unit | Gambia Bureau of Statistics<br>
+  GBoS GEOAI • Research and educational use<br>
+  Data source: Open-Meteo Historical Forecast API. Atmospheric fields are model output, not direct station observations.
 </footer>
 
 <script>
-const $=id=>document.getElementById(id);
-const EARTH=6371000;
+"use strict";
 
-const SOURCE_INFO={
- best_match:{
-  name:'Best Match',
-  description:'Open-Meteo automatically selects an appropriate available forecast model. The returned model metadata must be checked.'
- },
- ecmwf_ifs025:{
-  name:'ECMWF IFS 0.25°',
-  description:'Requests the ECMWF IFS 0.25-degree model. Availability depends on the selected historical period and API endpoint.'
- },
- gfs_seamless:{
-  name:'GFS Seamless',
-  description:'Requests the NOAA/NCEP GFS seamless model. Availability depends on the selected period and API endpoint.'
- }
+/* ============================================================
+   CONFIGURATION AND APPLICATION STATE
+============================================================ */
+
+const API_URL = "https://historical-forecast-api.open-meteo.com/v1/forecast";
+
+const MODELS = {
+  best_match: {
+    label:"Best Match — Automatic model selection",
+    description:"Allows the API to select an appropriate model for the requested domain and period.",
+    resolution:"Model-dependent",
+    interval:"Model-dependent"
+  },
+  ecmwf_ifs025: {
+    label:"ECMWF IFS 0.25°",
+    description:"Requests the ECMWF IFS 0.25-degree model. Its archived availability begins in February 2024. Native output is generally 3-hourly.",
+    resolution:"0.25°",
+    interval:"3-hourly native output"
+  },
+  gfs_seamless: {
+    label:"GFS Seamless",
+    description:"Requests the GFS Seamless model family. Actual temporal resolution and coverage depend on the selected data period.",
+    resolution:"Model-dependent",
+    interval:"Model-dependent"
+  }
 };
 
-const S={
- frames:[],times:[],grid:null,index:0,playing:false,
- timer:null,loaded:false,overlays:{},charts:{},
- metadata:null,raw:null
+const DOMAINS = {
+  med:{north:55,south:25,west:-15,east:40},
+  west:{north:50,south:30,west:-15,east:15},
+  east:{north:45,south:25,west:15,east:40},
+  europe:{north:60,south:30,west:-15,east:35}
 };
 
-const COLORS={
- temp:['#263e9c','#2876bf','#24afd0','#4ccfa0','#cbd957','#f2a24d','#e94b4d'],
- wind:['#263e9c','#2781c8','#20b8d3','#4ccf9e','#d8db59','#f28a44'],
- gradient:['#253c9c','#287bc6','#22b9d0','#4bcf9c','#f0cf56','#e85b49'],
- front:['#273b91','#2778bf','#23b9c7','#4ed09a','#ebd24d','#f25d43'],
- dew:['#2746a0','#2386cb','#32c5c3','#77d9a0','#e9d35c'],
- rh:['#2947a1','#248cc8','#2bc5c3','#8bd5a1','#f0d35d'],
- height:['#344b9c','#3d8ec5','#44bba8','#9bcf77','#e4d15d'],
- omega:['#2a4da1','#388acb','#62c7ba','#e0d16a','#e75b49']
+let map;
+let baseLayer;
+let dataLayer = L.layerGroup();
+let windLayer = L.layerGroup();
+let hotspotLayer = L.layerGroup();
+let gridLayer = L.layerGroup();
+
+let records = [];
+let frames = [];
+let timestamps = [];
+let activeIndex = 0;
+let animationTimer = null;
+let charts = {};
+let currentModel = "ecmwf_ifs025";
+let currentDomain = null;
+
+const $ = id => document.getElementById(id);
+
+function setStatus(status, type="") {
+  $("dataStatus").textContent = status;
+  $("dataStatus").className = "source-value status " + type;
+}
+
+function setProcessing(message) {
+  $("processingMessage").textContent = message;
+}
+
+function setProgress(message) {
+  $("progressMessage").textContent = message;
+}
+
+function setConnection(ok, text) {
+  $("connectionBadge").textContent = (ok ? "● " : "● ") + text;
+  $("connectionBadge").className = "pill " + (ok ? "live" : "");
+}
+
+function updateSourcePanel() {
+  currentModel = $("modelSelect").value;
+  const info = MODELS[currentModel];
+
+  $("requestedModel").textContent = info.label;
+  $("confirmedModel").textContent = "Not confirmed";
+  $("confirmedModel").className = "source-value status";
+  $("temporalResolution").textContent = info.interval;
+  $("modelDescription").textContent = info.description;
+  $("integrityModel").textContent = "Not supplied";
+  setStatus("Not retrieved");
+}
+
+$("modelSelect").addEventListener("change", updateSourcePanel);
+
+/* ============================================================
+   MAP INITIALIZATION
+============================================================ */
+
+function initMap() {
+  map = L.map("map", {zoomControl:true}).setView([40,12],4);
+
+  setBasemap("dark");
+
+  dataLayer.addTo(map);
+  windLayer.addTo(map);
+  hotspotLayer.addTo(map);
+  gridLayer.addTo(map);
+}
+
+const BASEMAPS = {
+  dark:"https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+  osm:"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  satellite:"https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+  terrain:"https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
 };
 
-const REGIONS={
- med:[55,25,-15,40],
- west:[52,28,-15,12],
- east:[48,28,10,40],
- europe:[60,32,-12,35]
-};
+function setBasemap(name) {
+  if (!map) return;
+  if (baseLayer) map.removeLayer(baseLayer);
 
-function status(s,error=false){
- $('status').textContent='● '+s;
- $('status').style.color=error?'#ff9d43':'#42d6a0';
+  baseLayer = L.tileLayer(BASEMAPS[name] || BASEMAPS.dark,{
+    maxZoom:18,
+    attribution:"Map data contributors"
+  }).addTo(map);
 }
 
-function loading(show,message='Processing...'){
- $('loading').style.display=show?'flex':'none';
- $('progress').textContent=message;
-}
+$("basemapSelect").addEventListener("change",e=>setBasemap(e.target.value));
 
-function fmt(v,n=2){return Number.isFinite(v)?v.toFixed(n):'--'}
-function radians(v){return v*Math.PI/180}
-function mean(a){
- const v=a.filter(Number.isFinite);
- return v.length?v.reduce((x,y)=>x+y,0)/v.length:NaN;
-}
-function max(a){
- const v=a.filter(Number.isFinite);
- return v.length?Math.max(...v):NaN;
-}
-
-function sourceChanged(){
- const key=$('source').value;
- const info=SOURCE_INFO[key];
- $('sourceDescription').textContent=info.description;
- $('requestedModel').textContent=info.name;
- $('model').textContent='Awaiting data';
- $('modelStatus').textContent='Not retrieved';
-}
-$('source').onchange=sourceChanged;
-sourceChanged();
-
-function setDefaultDates(){
- const d=new Date();
- const end=new Date(d);
- end.setUTCDate(end.getUTCDate()-2);
- const start=new Date(end);
- start.setUTCDate(start.getUTCDate()-1);
- $('end').value=end.toISOString().slice(0,10);
- $('start').value=start.toISOString().slice(0,10);
-}
-setDefaultDates();
-
-/* MAP */
-
-const map=L.map('map',{zoomControl:true,preferCanvas:true}).setView([40,10],4);
-
-const basemaps={
- dark:L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO'}),
- street:L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}),
- satellite:L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'Esri'}),
- terrain:L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{attribution:'OpenTopoMap'})
-};
-let base=basemaps.dark.addTo(map);
-
-$('basemap').onchange=()=>{
- map.removeLayer(base);
- base=basemaps[$('basemap').value];
- base.addTo(map);
-};
-
-function setExtent(){
- map.fitBounds([
-  [Number($('south').value),Number($('west').value)],
-  [Number($('north').value),Number($('east').value)]
- ]);
-}
-$('fit').onclick=setExtent;
-
-/* GRID */
-
-function createGrid(){
- const north=Number($('north').value);
- const south=Number($('south').value);
- const west=Number($('west').value);
- const east=Number($('east').value);
- const step=Number($('resolution').value);
-
- if(![north,south,west,east,step].every(Number.isFinite)||
- north<=south||east<=west||north>85||south< -85||
- west< -180||east>180)throw Error('Invalid geographic extent.');
-
- const lats=[],lons=[];
- for(let lat=north;lat>=south-1e-6;lat-=step)lats.push(+lat.toFixed(5));
- for(let lon=west;lon<=east+1e-6;lon+=step)lons.push(+lon.toFixed(5));
-
- if(lats.length*lons.length>700)
- throw Error('Too many grid points. Use a coarser resolution or smaller extent.');
-
- const points=[];
- lats.forEach((lat,r)=>lons.forEach((lon,c)=>points.push({lat,lon,r,c})));
-
- return {lats,lons,points,rows:lats.length,cols:lons.length,step};
-}
-
-/* API */
-
-async function fetchBatch(points,start,end){
- const variables=[
- 'temperature_850hPa',
- 'wind_speed_850hPa',
- 'wind_direction_850hPa',
- 'dew_point_850hPa',
- 'relative_humidity_850hPa',
- 'geopotential_height_850hPa',
- 'vertical_velocity_850hPa'
- ].join(',');
-
- const params=new URLSearchParams({
-  latitude:points.map(p=>p.lat).join(','),
-  longitude:points.map(p=>p.lon).join(','),
-  start_date:start,
-  end_date:end,
-  hourly:variables,
-  timezone:'UTC',
-  wind_speed_unit:'ms',
-  temperature_unit:'celsius'
- });
-
- const requested=$('source').value;
- if(requested!=='best_match')params.set('models',requested);
-
- const url='https://historical-forecast-api.open-meteo.com/v1/forecast?'+params;
- const response=await fetch(url);
-
- if(!response.ok){
-  const message=await response.text();
-  throw Error('Data API error '+response.status+': '+message.slice(0,300));
- }
-
- const result=await response.json();
- const arr=Array.isArray(result)?result:[result];
-
- if(arr.length!==points.length)
- throw Error('The API returned a different number of locations than requested.');
-
- return arr;
-}
-
-async function retrieveAll(g){
- const start=$('start').value;
- const end=$('end').value;
-
- if(!start||!end||end<start)throw Error('Choose a valid date range.');
- const days=(Date.parse(end)-Date.parse(start))/86400000;
- if(days>3)throw Error('The browser version supports up to three days per run.');
-
- const batches=[];
- for(let i=0;i<g.points.length;i+=20)
- batches.push(g.points.slice(i,i+20));
-
- let records=[];
- for(let i=0;i<batches.length;i++){
-  loading(true,'Retrieving grid batch '+(i+1)+' / '+batches.length);
-  const part=await fetchBatch(batches[i],start,end);
-  records=records.concat(part);
- }
- return records;
-}
-
-/* WIND COMPONENTS */
-
-function windUV(speed,direction){
- if(!Number.isFinite(speed)||!Number.isFinite(direction))
- return {u:NaN,v:NaN};
-
- const a=radians(direction);
- return {u:-speed*Math.sin(a),v:-speed*Math.cos(a)};
-}
-
-/* FRONTogenesis */
-
-function buildFrame(raw,g,t){
- const cells=raw.map((h,i)=>{
-  const p=g.points[i],v=h.hourly;
-  const uv=windUV(v.wind_speed_850hPa?.[t],v.wind_direction_850hPa?.[t]);
-
+function getDomain() {
   return {
-   ...p,
-   temp:v.temperature_850hPa?.[t],
-   speed:v.wind_speed_850hPa?.[t],
-   direction:v.wind_direction_850hPa?.[t],
-   dew:v.dew_point_850hPa?.[t],
-   rh:v.relative_humidity_850hPa?.[t],
-   height:v.geopotential_height_850hPa?.[t],
-   omega:v.vertical_velocity_850hPa?.[t],
-   u:uv.u,v:uv.v
+    north:Number($("north").value),
+    south:Number($("south").value),
+    west:Number($("west").value),
+    east:Number($("east").value)
   };
- });
+}
 
- const at=(r,c)=>cells[r*g.cols+c];
- const output=[];
-
- for(let r=0;r<g.rows;r++){
-  for(let c=0;c<g.cols;c++){
-   const p=at(r,c);
-   let gx=NaN,gy=NaN,gradient=NaN,front=NaN;
-   let divergence=NaN,vorticity=NaN;
-
-   if(r>0&&r<g.rows-1&&c>0&&c<g.cols-1){
-    const L=at(r,c-1),R=at(r,c+1);
-    const N=at(r-1,c),D=at(r+1,c);
-
-    const dx=2*EARTH*Math.cos(radians(p.lat))*radians(g.step);
-    const dy=2*EARTH*radians(g.step);
-
-    const valid=[L,R,N,D].every(q=>
-      [q.temp,q.u,q.v].every(Number.isFinite));
-
-    if(valid&&dx>0&&dy>0){
-     gx=(R.temp-L.temp)/dx;
-     gy=(N.temp-D.temp)/dy;
-
-     const ux=(R.u-L.u)/dx;
-     const uy=(N.u-D.u)/dy;
-     const vx=(R.v-L.v)/dx;
-     const vy=(N.v-D.v)/dy;
-
-     gradient=Math.hypot(gx,gy)*100000;
-     const G=Math.hypot(gx,gy);
-
-     if(G>1e-14){
-      front=-(gx*gx*ux+gx*gy*(uy+vx)+gy*gy*vy)/G*100000*10800;
-     }else front=0;
-
-     divergence=ux+vy;
-     vorticity=vx-uy;
-    }
-   }
-
-   output.push({...p,gx,gy,gradient,front,divergence,vorticity});
+$("regionSelect").addEventListener("change",()=>{
+  const key=$("regionSelect").value;
+  if (DOMAINS[key]) {
+    const d=DOMAINS[key];
+    $("north").value=d.north;
+    $("south").value=d.south;
+    $("west").value=d.west;
+    $("east").value=d.east;
   }
- }
- return output;
-}
-
-/* ANALYSIS */
-
-async function runAnalysis(){
- try{
-  $('run').disabled=true;
-  stopAnimation();
-  S.loaded=false;
-  loading(true,'Preparing atmospheric grid');
-  status('CONNECTING');
-
-  const grid=createGrid();
-  S.grid=grid;
-
-  const raw=await retrieveAll(grid);
-  const times=raw[0]?.hourly?.time;
-  if(!times?.length)throw Error('No hourly observations returned.');
-
-  S.raw=raw;
-  S.times=times;
-  S.frames=[];
-
-  for(let t=0;t<times.length;t++){
-   loading(true,'Calculating atmospheric diagnostics '+(t+1)+' / '+times.length);
-   S.frames.push(buildFrame(raw,grid,t));
-  }
-
-  const meta=raw[0];
-  const requested=$('source').value;
-
-  // Location-level model metadata is shown when returned by the API.
-  const modelName=meta.model||meta.model_name||meta.generationtime_ms;
-  const displayName=typeof modelName==='string'?modelName:
-   requested==='best_match'?'Best Match — model not identified in response':
-   SOURCE_INFO[requested].name+' — requested';
-
-  $('model').textContent=displayName;
-  $('modelQuality').textContent=displayName;
-  $('modelStatus').textContent='Data retrieved';
-
-  S.index=0;
-  S.loaded=true;
-  $('timeline').max=S.frames.length-1;
-  $('timeline').value=0;
-  $('gridInfo').textContent=grid.rows+' × '+grid.cols;
-
-  loading(false);
-  setExtent();
-  updateAll();
-  buildTemporalChart();
-  status('ANALYSIS COMPLETE');
-
- }catch(error){
-  console.error(error);
-  loading(false);
-  status('ANALYSIS FAILED',true);
-  alert(error.message);
- }finally{
-  $('run').disabled=false;
- }
-}
-
-/* MAP RENDERING */
-
-function clearLayers(){
- Object.values(S.overlays).forEach(layer=>{
-  if(map.hasLayer(layer))map.removeLayer(layer);
- });
- S.overlays={};
-}
-
-function scaleColor(v,lo,hi,palette){
- if(!Number.isFinite(v))return '#526477';
- const ratio=Math.max(0,Math.min(.9999,(v-lo)/(hi-lo||1)));
- const pos=ratio*(palette.length-1);
- const i=Math.floor(pos),f=pos-i;
- const a=palette[i].match(/\w\w/g).map(x=>parseInt(x,16));
- const b=palette[i+1].match(/\w\w/g).map(x=>parseInt(x,16));
- return '#'+a.map((x,k)=>Math.round(x+(b[k]-x)*f).toString(16).padStart(2,'0')).join('');
-}
-
-function renderMap(){
- if(!S.loaded)return;
- clearLayers();
-
- const frame=S.frames[S.index];
- const field=$('field').value;
- const key={temp:'temp',wind:'speed',gradient:'gradient',front:'front',
- dew:'dew',rh:'rh',height:'height',omega:'omega'}[field];
-
- const values=frame.map(p=>p[key]).filter(Number.isFinite);
- let lo=values.length?Math.min(...values):0;
- let hi=values.length?Math.max(...values):1;
- if(lo===hi)hi=lo+1;
-
- const palette=COLORS[field];
- const grid=S.grid;
- const opacity=Number($('opacity').value)/100;
-
- if($('layerField').checked){
-  const layer=L.layerGroup();
-
-  frame.forEach(p=>{
-   if(!Number.isFinite(p[key]))return;
-   const d=grid.step/2;
-   const color=scaleColor(p[key],lo,hi,palette);
-   const rect=L.rectangle([[p.lat-d,p.lon-d],[p.lat+d,p.lon+d]],{
-    color,weight:.35,fillColor:color,fillOpacity:opacity
-   });
-
-   rect.bindTooltip(
-    '850 hPa<br>Latitude: '+p.lat.toFixed(2)+
-    '<br>Longitude: '+p.lon.toFixed(2)+
-    '<br>Temperature: '+fmt(p.temp)+' °C'+
-    '<br>Wind: '+fmt(p.speed)+' m/s'+
-    '<br>Gradient: '+fmt(p.gradient)+' K/100 km'+
-    '<br>Frontogenesis: '+fmt(p.front)+' K/100 km/3h'
-   );
-   layer.addLayer(rect);
-  });
-  S.overlays.field=layer.addTo(map);
- }
-
- if($('layerWind').checked){
-  const layer=L.layerGroup();
-  frame.forEach(p=>{
-   if(!Number.isFinite(p.u)||!Number.isFinite(p.v)||p.speed<.5)return;
-
-   const angle=Math.atan2(p.u,p.v);
-   const scale=.17;
-   const endLat=p.lat+Math.cos(angle)*scale;
-   const endLon=p.lon+Math.sin(angle)*scale/Math.max(.35,Math.cos(radians(p.lat)));
-
-   const a=map.latLngToLayerPoint([p.lat,p.lon]);
-   const b=map.latLngToLayerPoint([endLat,endLon]);
-   const pixelAngle=Math.atan2(b.y-a.y,b.x-a.x);
-   const size=5;
-
-   const tip=map.layerPointToLatLng(b);
-   const p1=map.layerPointToLatLng([
-    b.x-size*Math.cos(pixelAngle-.55),
-    b.y-size*Math.sin(pixelAngle-.55)
-   ]);
-   const p2=map.layerPointToLatLng([
-    b.x-size*Math.cos(pixelAngle+.55),
-    b.y-size*Math.sin(pixelAngle+.55)
-   ]);
-
-   layer.addLayer(L.polyline([[p.lat,p.lon],tip],{color:'#fff',weight:1.1}));
-   layer.addLayer(L.polygon([tip,p1,p2],{
-    color:'#fff',weight:.5,fillColor:'#fff',fillOpacity:.9
-   }));
-  });
-  S.overlays.wind=layer.addTo(map);
- }
-
- if($('layerFront').checked){
-  const layer=L.layerGroup();
-  frame.forEach(p=>{
-   if(!Number.isFinite(p.front)||p.front<.05)return;
-   layer.addLayer(L.circleMarker([p.lat,p.lon],{
-    radius:Math.min(9,3+p.front),
-    color:'#ffb44c',weight:1,fillColor:'#f04c40',fillOpacity:.75
-   }));
-  });
-  S.overlays.front=layer.addTo(map);
- }
-
- if($('layerGradient').checked){
-  const layer=L.layerGroup();
-  frame.forEach(p=>{
-   if(!Number.isFinite(p.gradient)||p.gradient<.2)return;
-   layer.addLayer(L.circleMarker([p.lat,p.lon],{
-    radius:3,color:'#5cf3d0',weight:1,
-    fillColor:'#5cf3d0',fillOpacity:.7
-   }));
-  });
-  S.overlays.gradient=layer.addTo(map);
- }
-
- if($('layerGrid').checked){
-  S.overlays.grid=L.layerGroup(frame.map(p=>
-   L.circleMarker([p.lat,p.lon],{radius:2,color:'#fff',weight:1,fillOpacity:.4})
-  )).addTo(map);
- }
-
- const titles={
- temp:'TEMPERATURE °C',wind:'WIND SPEED m/s',
- gradient:'GRADIENT K/100 km',
- front:'FRONTOGENESIS K/100 km/3h',
- dew:'DEWPOINT °C',rh:'RELATIVE HUMIDITY %',
- height:'GEOPOTENTIAL HEIGHT m',omega:'VERTICAL VELOCITY Pa/s'
- };
-
- $('legendTitle').textContent=titles[field];
- $('legendRange').textContent=fmt(lo,1)+' – '+fmt(hi,1);
- $('maptime').textContent=S.times[S.index];
- $('clock').textContent=S.times[S.index]+' UTC';
-}
-
-/* CHARTS */
-
-function histogram(arr,bins=12){
- const a=arr.filter(Number.isFinite);
- if(!a.length)return {labels:[],counts:[]};
- let lo=Math.min(...a),hi=Math.max(...a);
- if(lo===hi)hi=lo+1;
- const width=(hi-lo)/bins;
- const counts=Array(bins).fill(0);
- a.forEach(v=>counts[Math.min(bins-1,Math.floor((v-lo)/width))]++);
- return {labels:counts.map((_,i)=>(lo+(i+.5)*width).toFixed(1)),counts};
-}
-
-function chart(id,type,labels,datasets,extra={}){
- if(S.charts[id])S.charts[id].destroy();
- S.charts[id]=new Chart($(id),{
-  type,data:{labels,datasets},
-  options:{
-   responsive:true,maintainAspectRatio:false,animation:false,
-   plugins:{legend:{display:datasets.length>1,labels:{color:'#a9bdce',font:{size:9}}}},
-   scales:{
-    x:{ticks:{color:'#8da5ba',font:{size:9},maxTicksLimit:7},grid:{color:'#263b50'}},
-    y:{ticks:{color:'#8da5ba',font:{size:9}},grid:{color:'#263b50'}}
-   },...extra
-  }
- });
-}
-
-function updateCharts(){
- const f=S.frames[S.index];
- const t=histogram(f.map(p=>p.temp));
- const w=histogram(f.map(p=>p.speed));
- const h=histogram(f.map(p=>p.front));
-
- chart('temperatureChart','bar',t.labels,[{
- label:'Temperature frequency',data:t.counts,
- backgroundColor:'#e9a14c',borderRadius:3
- }]);
-
- chart('windChart','bar',w.labels,[{
- label:'Wind frequency',data:w.counts,
- backgroundColor:'#28b9d4',borderRadius:3
- }]);
-
- chart('frontChart','bar',h.labels,[{
- label:'Frontogenesis frequency',data:h.counts,
- backgroundColor:'#ff9d43',borderRadius:3
- }]);
-}
-
-function buildTemporalChart(){
- const labels=S.times.map(t=>t.slice(11,16));
- const temp=S.frames.map(f=>mean(f.map(p=>p.temp)));
- const wind=S.frames.map(f=>mean(f.map(p=>p.speed)));
- const front=S.frames.map(f=>mean(f.map(p=>p.front)));
-
- chart('timeChart','line',labels,[
- {label:'Mean temperature °C',data:temp,borderColor:'#e9a14c',pointRadius:1,yAxisID:'y'},
- {label:'Mean wind m/s',data:wind,borderColor:'#28b9d4',pointRadius:1,yAxisID:'y1'},
- {label:'Mean frontogenesis',data:front,borderColor:'#ff5967',pointRadius:1,yAxisID:'y1'}
- ],{
- scales:{
- x:{ticks:{color:'#8da5ba',font:{size:8},maxTicksLimit:7},grid:{color:'#263b50'}},
- y:{position:'left',ticks:{color:'#e9a14c',font:{size:9}},grid:{color:'#263b50'}},
- y1:{position:'right',ticks:{color:'#28b9d4',font:{size:9}},grid:{display:false}}
- }
- });
-}
-
-/* INDICATORS */
-
-function updateAnalytics(){
- const f=S.frames[S.index];
- const temps=f.map(p=>p.temp);
- const winds=f.map(p=>p.speed);
- const gradients=f.map(p=>p.gradient);
- const fronts=f.map(p=>p.front);
-
- $('kTemp').textContent=fmt(mean(temps));
- $('kWind').textContent=fmt(max(winds));
- $('kGrad').textContent=fmt(max(gradients));
- $('kFront').textContent=fmt(max(fronts));
-
- $('cells').textContent=f.filter(p=>Number.isFinite(p.temp)&&Number.isFinite(p.speed)).length;
- $('meanWind').textContent=fmt(mean(winds))+' m/s';
- $('meanGradient').textContent=fmt(mean(gradients))+' K/100 km';
- $('positive').textContent=fronts.filter(v=>Number.isFinite(v)&&v>.01).length;
- $('negative').textContent=fronts.filter(v=>Number.isFinite(v)&&v<-.01).length;
-
- const fastest=f.filter(p=>Number.isFinite(p.speed))
- .sort((a,b)=>b.speed-a.speed)[0];
-
- $('direction').textContent=fastest?fmt(fastest.direction,0)+'°':'--';
- $('step').textContent=(S.index+1)+' / '+S.frames.length;
- $('missing').textContent=temps.filter(v=>!Number.isFinite(v)).length;
- $('missingWind').textContent=winds.filter(v=>!Number.isFinite(v)).length;
-
- updateCharts();
-}
-
-function updateAll(){
- renderMap();
- updateAnalytics();
- $('timeline').value=S.index;
-}
-
-/* ANIMATION */
-
-function stopAnimation(){
- S.playing=false;
- clearInterval(S.timer);
- $('play').textContent='▶';
-}
-function advance(){
- if(!S.loaded)return;
- if(S.index>=S.frames.length-1){
-  if(!$('loop').checked){stopAnimation();return}
-  S.index=0;
- }else S.index++;
- updateAll();
-}
-function startAnimation(){
- if(!S.loaded)return;
- if(S.playing){stopAnimation();return}
- S.playing=true;
- $('play').textContent='Ⅱ';
- S.timer=setInterval(advance,Number($('speed').value));
-}
-
-$('play').onclick=startAnimation;
-$('prev').onclick=()=>{
- if(S.loaded){S.index=Math.max(0,S.index-1);updateAll()}
-};
-$('next').onclick=()=>{
- if(S.loaded){S.index=Math.min(S.frames.length-1,S.index+1);updateAll()}
-};
-$('timeline').oninput=e=>{
- if(S.loaded){S.index=Number(e.target.value);updateAll()}
-};
-$('speed').onchange=()=>{
- if(S.playing){stopAnimation();startAnimation()}
-};
-
-/* CONTROLS */
-
-$('run').onclick=runAnalysis;
-
-$('region').onchange=()=>{
- const v=REGIONS[$('region').value];
- if(!v)return;
- $('north').value=v[0];
- $('south').value=v[1];
- $('west').value=v[2];
- $('east').value=v[3];
- setExtent();
-};
-
-['field','layerField','layerWind','layerFront','layerGradient','layerGrid','opacity'].forEach(id=>{
- $(id).addEventListener('change',()=>{
-  if(id==='opacity')$('opacityText').textContent=$('opacity').value+'%';
-  if(S.loaded)renderMap();
- });
 });
 
-$('reset').onclick=()=>{
- stopAnimation();
- $('region').value='med';
- $('region').dispatchEvent(new Event('change'));
- $('resolution').value='1.5';
- $('field').value='temp';
- $('layerField').checked=true;
- $('layerWind').checked=true;
- $('layerFront').checked=true;
- $('layerGradient').checked=false;
- $('layerGrid').checked=false;
- $('opacity').value=75;
- $('opacityText').textContent='75%';
- $('speed').value=800;
- $('source').value='best_match';
- sourceChanged();
- if(S.loaded)updateAll();
-};
+$("zoomDomainBtn").addEventListener("click",()=>{
+  const d=getDomain();
+  map.fitBounds([[d.south,d.west],[d.north,d.east]]);
+});
 
-/* EXPORT */
+$("clearMapBtn").addEventListener("click",clearMapLayers);
 
-function download(content,name,type){
- const blob=new Blob([content],{type});
- const url=URL.createObjectURL(blob);
- const a=document.createElement('a');
- a.href=url;a.download=name;a.click();
- setTimeout(()=>URL.revokeObjectURL(url),1000);
+function clearMapLayers() {
+  dataLayer.clearLayers();
+  windLayer.clearLayers();
+  hotspotLayer.clearLayers();
+  gridLayer.clearLayers();
 }
 
-$('csv').onclick=()=>{
- if(!S.loaded)return alert('Run the analysis first.');
+/* ============================================================
+   GRID GENERATION
+============================================================ */
 
- const headers=[
- 'time_utc','latitude','longitude','temperature_C',
- 'wind_speed_ms','wind_direction_deg','dewpoint_C',
- 'relative_humidity_pct','geopotential_height_m',
- 'vertical_velocity_Pas','gradient_K100km',
- 'frontogenesis_K100km_3h','divergence_s-1','vorticity_s-1'
- ];
- const lines=[headers.join(',')];
+function generateGrid(domain, spacing) {
+  const points=[];
+  let id=0;
 
- S.frames.forEach((frame,t)=>{
-  frame.forEach(p=>{
-   lines.push([
-    S.times[t],p.lat,p.lon,p.temp,p.speed,p.direction,
-    p.dew,p.rh,p.height,p.omega,p.gradient,p.front,
-    p.divergence,p.vorticity
-   ].map(v=>v??'').join(','));
+  for(let lat=domain.south;lat<=domain.north+0.0001;lat+=spacing) {
+    for(let lon=domain.west;lon<=domain.east+0.0001;lon+=spacing) {
+      points.push({
+        id:id++,
+        latitude:Number(lat.toFixed(4)),
+        longitude:Number(lon.toFixed(4))
+      });
+    }
+  }
+  return points;
+}
+
+/* ============================================================
+   API REQUEST
+============================================================ */
+
+const HOURLY_VARIABLES = [
+  "temperature_850hPa",
+  "wind_speed_850hPa",
+  "wind_direction_850hPa",
+  "relative_humidity_850hPa",
+  "geopotential_height_850hPa"
+];
+
+function makeApiUrl(points, model, start, end) {
+  const params = new URLSearchParams();
+
+  params.set("latitude",points.map(p=>p.latitude).join(","));
+  params.set("longitude",points.map(p=>p.longitude).join(","));
+  params.set("start_date",start);
+  params.set("end_date",end);
+  params.set("hourly",HOURLY_VARIABLES.join(","));
+  params.set("timezone","UTC");
+  params.set("temperature_unit","celsius");
+  params.set("wind_speed_unit","kmh");
+
+  if(model !== "best_match") {
+    params.set("models",model);
+  }
+
+  return API_URL + "?" + params.toString();
+}
+
+function normalizeResponse(json, batchPoints) {
+  const list=Array.isArray(json) ? json : [json];
+
+  return list.map((item,index)=>{
+    const point=batchPoints[index];
+    if(!point || !item || !item.hourly) return null;
+
+    const h=item.hourly;
+    return {
+      id:point.id,
+      latitude:point.latitude,
+      longitude:point.longitude,
+      time:h.time || [],
+      temperature:h.temperature_850hPa || [],
+      windSpeed:h.wind_speed_850hPa || [],
+      windDirection:h.wind_direction_850hPa || [],
+      humidity:h.relative_humidity_850hPa || [],
+      height:h.geopotential_height_850hPa || [],
+      responseModel:item.model || item.model_name || null,
+      utcOffset:item.utc_offset_seconds
+    };
+  }).filter(Boolean);
+}
+
+async function fetchBatch(points,model,start,end,batchNumber,totalBatches) {
+  const url=makeApiUrl(points,model,start,end);
+
+  const response=await fetch(url);
+  if(!response.ok) {
+    let detail="";
+    try {
+      const err=await response.json();
+      detail=err.reason || err.message || "";
+    } catch(e) {}
+    throw new Error("HTTP "+response.status+(detail ? " — "+detail : ""));
+  }
+
+  const json=await response.json();
+  const normalized=normalizeResponse(json,points);
+
+  if(normalized.length===0) {
+    throw new Error("The API returned no usable location records.");
+  }
+
+  setProgress("Downloaded batch "+batchNumber+" of "+totalBatches);
+  return normalized;
+}
+
+async function retrieveAll(points,model,start,end) {
+  const batchSize=20;
+  const batches=[];
+
+  for(let i=0;i<points.length;i+=batchSize) {
+    batches.push(points.slice(i,i+batchSize));
+  }
+
+  const output=[];
+
+  for(let i=0;i<batches.length;i++) {
+    const result=await fetchBatch(
+      batches[i],model,start,end,i+1,batches.length
+    );
+    output.push(...result);
+  }
+
+  return output;
+}
+
+/* ============================================================
+   FRAME ASSEMBLY
+============================================================ */
+
+function buildFrames(inputRecords) {
+  if(!inputRecords.length) throw new Error("No records available.");
+
+  const timeSet=new Set();
+  inputRecords.forEach(r=>r.time.forEach(t=>timeSet.add(t)));
+
+  timestamps=Array.from(timeSet).sort((a,b)=>new Date(a)-new Date(b));
+
+  frames=timestamps.map((time,t)=>{
+    const cells=inputRecords.map(r=>({
+      id:r.id,
+      latitude:r.latitude,
+      longitude:r.longitude,
+      temperature:r.temperature[t] ?? null,
+      windSpeed:r.windSpeed[t] ?? null,
+      windDirection:r.windDirection[t] ?? null,
+      humidity:r.humidity[t] ?? null,
+      height:r.height[t] ?? null,
+      u:null,v:null,gradient:null,frontogenesis:null
+    }));
+
+    cells.forEach(c=>{
+      if(c.windSpeed!==null && c.windDirection!==null) {
+        const rad=c.windDirection*Math.PI/180;
+        c.u=-c.windSpeed*Math.sin(rad);
+        c.v=-c.windSpeed*Math.cos(rad);
+      }
+    });
+
+    calculateDiagnostics(cells);
+    return {time,cells};
   });
- });
- download(lines.join('\n'),'Atmospheric_Frontogenesis_850hPa.csv','text/csv');
-};
+}
 
-$('json').onclick=()=>{
- if(!S.loaded)return alert('Run the analysis first.');
+/* ============================================================
+   SPATIAL DIAGNOSTICS
+============================================================ */
 
- const result={
-  title:'Atmospheric Frontogenesis Intelligence',
-  pressure_level:'850 hPa',
-  requested_model:$('source').value,
-  data_source:'Open-Meteo Historical Forecast Archive',
-  analysis_period:{start:$('start').value,end:$('end').value},
-  grid:S.grid,
-  times:S.times,
-  frames:S.frames,
-  methodology:{
-   temperature_gradient:'Spherical-coordinate finite differences',
-   wind:'Meteorological wind direction converted to U and V',
-   frontogenesis:'Horizontal kinematic temperature-gradient deformation',
-   units:'K per 100 km per 3 hours'
+function cellKey(lat,lon) {
+  return lat.toFixed(4)+"_"+lon.toFixed(4);
+}
+
+function calculateDiagnostics(cells) {
+  const lookup=new Map();
+  cells.forEach(c=>lookup.set(cellKey(c.latitude,c.longitude),c));
+
+  const spacing=Number($("gridResolution").value);
+  const rad=Math.PI/180;
+
+  function get(lat,lon) {
+    return lookup.get(cellKey(lat,lon));
   }
- };
- download(JSON.stringify(result),'Atmospheric_Frontogenesis_850hPa.json','application/json');
-};
 
-$('geojson').onclick=()=>{
- if(!S.loaded)return alert('Run the analysis first.');
+  cells.forEach(c=>{
+    const dLat=spacing;
+    const dLon=spacing;
 
- const features=S.frames[S.index].map(p=>({
-  type:'Feature',
-  geometry:{type:'Point',coordinates:[p.lon,p.lat]},
-  properties:{
-   time:S.times[S.index],
-   temperature_850hPa:p.temp,
-   wind_speed_850hPa:p.speed,
-   wind_direction_850hPa:p.direction,
-   temperature_gradient:p.gradient,
-   frontogenesis:p.front,
-   dewpoint:p.dew,
-   relative_humidity:p.rh,
-   geopotential_height:p.height,
-   vertical_velocity:p.omega
+    const north=get(c.latitude+dLat,c.longitude);
+    const south=get(c.latitude-dLat,c.longitude);
+    const east=get(c.latitude,c.longitude+dLon);
+    const west=get(c.latitude,c.longitude-dLon);
+
+    if(c.temperature===null) return;
+
+    const kmLat=111.32*dLat;
+    const kmLon=111.32*Math.cos(c.latitude*rad)*dLon;
+
+    let dTdx=null,dTdy=null;
+    let duDx=null,duDy=null,dvDx=null,dvDy=null;
+
+    if(east && west && east.temperature!==null && west.temperature!==null) {
+      dTdx=(east.temperature-west.temperature)/(2*kmLon);
+    }
+    if(north && south && north.temperature!==null && south.temperature!==null) {
+      dTdy=(north.temperature-south.temperature)/(2*kmLat);
+    }
+
+    if(east && west && east.u!==null && west.u!==null) {
+      duDx=(east.u-west.u)/(2*kmLon);
+    }
+    if(north && south && north.u!==null && south.u!==null) {
+      duDy=(north.u-south.u)/(2*kmLat);
+    }
+    if(east && west && east.v!==null && west.v!==null) {
+      dvDx=(east.v-west.v)/(2*kmLon);
+    }
+    if(north && south && north.v!==null && south.v!==null) {
+      dvDy=(north.v-south.v)/(2*kmLat);
+    }
+
+    if(dTdx!==null && dTdy!==null) {
+      const grad=Math.sqrt(dTdx*dTdx+dTdy*dTdy);
+      c.gradient=grad*1000; // K per 1000 km
+
+      if(grad>0 && duDx!==null && duDy!==null && dvDx!==null && dvDy!==null) {
+        /*
+          Simplified horizontal kinematic frontogenesis:
+          F = -(1/|grad T|) grad(T) dot [D(grad T)/Dt]
+          using the horizontal wind deformation contribution.
+        */
+        const materialX=duDx*dTdx+dvDx*dTdy;
+        const materialY=duDy*dTdx+dvDy*dTdy;
+
+        const raw=-(dTdx*materialX+dTdy*materialY)/grad;
+
+        // Convert K/s per 100 km into K per 100 km per 3 hours.
+        c.frontogenesis=raw*100000*10800;
+      }
+    }
+  });
+}
+
+/* ============================================================
+   MAP RENDERING
+============================================================ */
+
+function getValue(cell,field) {
+  switch(field) {
+    case "temperature": return cell.temperature;
+    case "gradient": return cell.gradient;
+    case "wind": return cell.windSpeed;
+    case "height": return cell.height;
+    case "humidity": return cell.humidity;
+    default: return cell.frontogenesis;
   }
- }));
- download(JSON.stringify({type:'FeatureCollection',features}),
- 'Atmospheric_850hPa_CurrentFrame.geojson','application/geo+json');
-};
+}
 
-/* INITIALIZE */
+function colorScale(value,field) {
+  if(value===null || !Number.isFinite(value)) return "#62758a";
 
-map.fitBounds([[25,-15],[55,40]]);
-window.addEventListener('resize',()=>map.invalidateSize());
-status('SYSTEM READY');
+  if(field==="temperature") {
+    if(value< -15) return "#315dff";
+    if(value< -5) return "#26b8ed";
+    if(value< 5) return "#42d6a4";
+    if(value< 15) return "#ffe46b";
+    if(value< 25) return "#ff9b45";
+    return "#ed4b55";
+  }
+
+  if(field==="wind") {
+    if(value<20) return "#315dff";
+    if(value<40) return "#31c8e8";
+    if(value<60) return "#42d6a4";
+    if(value<80) return "#ffe46b";
+    return "#ff654f";
+  }
+
+  if(field==="humidity") {
+    if(value<30) return "#d65a4a";
+    if(value<50) return "#f2bd52";
+    if(value<70) return "#40c7b3";
+    return "#4285ff";
+  }
+
+  const abs=Math.abs(value);
+  if(abs<.02) return "#315dff";
+  if(abs<.05) return "#31c8e8";
+  if(abs<.10) return "#42d6a4";
+  if(abs<.20) return "#ffe46b";
+  if(abs<.35) return "#ff9148";
+  return "#e83e58";
+}
+
+function renderMap() {
+  if(!frames.length) return;
+
+  const frame=frames[activeIndex];
+  const field=$("fieldSelect").value;
+  const opacity=Number($("opacity").value)/100;
+
+  dataLayer.clearLayers();
+  windLayer.clearLayers();
+  hotspotLayer.clearLayers();
+  gridLayer.clearLayers();
+
+  const valid=frame.cells.filter(c=>getValue(c,field)!==null);
+
+  valid.forEach(c=>{
+    const value=getValue(c,field);
+    const color=colorScale(value,field);
+
+    L.circleMarker([c.latitude,c.longitude],{
+      radius:Math.max(4,Number($("gridResolution").value)*3),
+      color:color,
+      fillColor:color,
+      fillOpacity:opacity,
+      opacity:.9,
+      weight:.8
+    }).bindPopup(
+      "<b>850 hPa grid cell</b><br>"+
+      "Latitude: "+c.latitude.toFixed(2)+"<br>"+
+      "Longitude: "+c.longitude.toFixed(2)+"<br>"+
+      "Temperature: "+format(c.temperature,1)+" °C<br>"+
+      "Wind: "+format(c.windSpeed,1)+" km/h<br>"+
+      "Frontogenesis: "+format(c.frontogenesis,3)
+    ).addTo(dataLayer);
+
+    if($("showHotspots").checked &&
+       c.frontogenesis!==null &&
+       Math.abs(c.frontogenesis)>=.10) {
+      L.circleMarker([c.latitude,c.longitude],{
+        radius:8,color:"#ff4d58",fillColor:"#ff4d58",
+        fillOpacity:.18,weight:2
+      }).addTo(hotspotLayer);
+    }
+
+    if($("showWind").checked && c.windSpeed!==null && c.windDirection!==null) {
+      const arrow="➤";
+      const marker=L.marker([c.latitude,c.longitude],{
+        interactive:false,
+        icon:L.divIcon({
+          className:"",
+          html:'<div style="color:#f7f7f7;font-size:15px;text-shadow:0 0 4px #000;transform:rotate('+
+            (c.windDirection+90)+'deg)">'+arrow+'</div>',
+          iconSize:[18,18],iconAnchor:[9,9]
+        })
+      });
+      marker.addTo(windLayer);
+    }
+
+    if($("showGrid").checked) {
+      L.circleMarker([c.latitude,c.longitude],{
+        radius:2,color:"#ffffff",fillOpacity:0,weight:1
+      }).addTo(gridLayer);
+    }
+  });
+
+  const fieldNames={
+    frontogenesis:"Kinematic frontogenesis",
+    temperature:"Temperature — 850 hPa",
+    gradient:"Temperature gradient",
+    wind:"Wind speed — 850 hPa",
+    height:"Geopotential height — 850 hPa",
+    humidity:"Relative humidity — 850 hPa"
+  };
+
+  $("mapTitle").textContent=fieldNames[field];
+  $("mapSubtitle").textContent=new Date(frame.time).toUTCString();
+  $("legendTitle").textContent=fieldNames[field];
+
+  const units={
+    frontogenesis:"K / 100 km / 3 h (approx.)",
+    temperature:"°C",
+    gradient:"K / 1000 km",
+    wind:"km/h",
+    height:"m",
+    humidity:"%"
+  };
+  $("legendUnits").textContent=units[field];
+}
+
+/* ============================================================
+   ANALYTICS
+============================================================ */
+
+function mean(arr) {
+  const v=arr.filter(x=>x!==null && Number.isFinite(x));
+  return v.length ? v.reduce((a,b)=>a+b,0)/v.length : null;
+}
+function max(arr) {
+  const v=arr.filter(x=>x!==null && Number.isFinite(x));
+  return v.length ? Math.max(...v) : null;
+}
+function format(value,digits=1) {
+  return value===null || !Number.isFinite(value) ? "—" : value.toFixed(digits);
+}
+
+function updateAnalytics() {
+  if(!frames.length) return;
+
+  const frame=frames[activeIndex];
+  const cells=frame.cells;
+
+  const temps=cells.map(c=>c.temperature);
+  const winds=cells.map(c=>c.windSpeed);
+  const humidity=cells.map(c=>c.humidity);
+  const heights=cells.map(c=>c.height);
+  const gradients=cells.map(c=>c.gradient);
+  const fronts=cells.map(c=>c.frontogenesis);
+
+  const validFront=fronts.filter(x=>x!==null && Number.isFinite(x));
+  const hotspotCount=validFront.filter(x=>Math.abs(x)>=.10).length;
+
+  $("mTemp").textContent=format(mean(temps),1)+" °C";
+  $("mGradient").textContent=format(mean(gradients),3);
+  $("mHumidity").textContent=format(mean(humidity),1)+" %";
+  $("mHeight").textContent=format(mean(heights),0)+" m";
+  $("mMaxWind").textContent=format(max(winds),1)+" km/h";
+  $("mHotspots").textContent=hotspotCount;
+
+  $("kpiPoints").textContent=cells.length.toLocaleString();
+  $("kpiTimes").textContent=timestamps.length.toLocaleString();
+  $("kpiFront").textContent=format(max(validFront),3);
+  $("kpiWind").textContent=format(mean(winds),1);
+
+  $("timeLabel").textContent=new Date(frame.time).toISOString().replace("T"," ").slice(0,16)+" UTC";
+  $("timeSlider").value=activeIndex;
+
+  $("integrityRecords").textContent=(records.length*timestamps.length).toLocaleString();
+  const missing=temps.filter(v=>v===null).length;
+  $("integrityMissing").textContent=missing+" / "+temps.length;
+  $("integrityInterval").textContent=getIntervalLabel();
+
+  updateCharts();
+}
+
+function getIntervalLabel() {
+  if(timestamps.length<2) return "Insufficient timestamps";
+  const diff=(new Date(timestamps[1])-new Date(timestamps[0]))/3600000;
+  return diff+" hour(s)";
+}
+
+function makeChart(id,type,data,options={}) {
+  if(charts[id]) charts[id].destroy();
+
+  charts[id]=new Chart($(id),{
+    type,
+    data,
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{ticks:{color:"#91a7bf",font:{size:9}},grid:{color:"#20354d"}},
+        y:{ticks:{color:"#91a7bf",font:{size:9}},grid:{color:"#20354d"}}
+      },
+      ...options
+    }
+  });
+}
+
+function histogram(values,bins=10) {
+  const v=values.filter(x=>x!==null && Number.isFinite(x));
+  if(!v.length) return {labels:[],counts:[]};
+
+  let min=Math.min(...v),maxV=Math.max(...v);
+  if(min===maxV) maxV=min+1;
+  const step=(maxV-min)/bins;
+  const counts=Array(bins).fill(0);
+  const labels=[];
+
+  v.forEach(x=>{
+    const i=Math.min(bins-1,Math.floor((x-min)/step));
+    counts[i]++;
+  });
+
+  for(let i=0;i<bins;i++) labels.push((min+i*step).toFixed(1));
+  return {labels,counts};
+}
+
+function updateCharts() {
+  const frame=frames[activeIndex];
+  const h=histogram(frame.cells.map(c=>c.temperature));
+
+  makeChart("tempChart","bar",{
+    labels:h.labels,
+    datasets:[{data:h.counts,backgroundColor:"#31c8e8",borderRadius:3}]
+  });
+
+  const f=histogram(frame.cells.map(c=>c.frontogenesis));
+  makeChart("frontChart","bar",{
+    labels:f.labels,
+    datasets:[{data:f.counts,backgroundColor:"#ff9b55",borderRadius:3}]
+  });
+
+  const temporal=frames.map(fr=>({
+    time:fr.time,
+    value:mean(fr.cells.map(c=>c.frontogenesis))
+  }));
+
+  makeChart("timeChart","line",{
+    labels:temporal.map(x=>new Date(x.time).toISOString().slice(5,16)),
+    datasets:[{
+      data:temporal.map(x=>x.value),
+      borderColor:"#b38aff",
+      backgroundColor:"rgba(179,138,255,.15)",
+      fill:true,tension:.25,pointRadius:2
+    }]
+  });
+
+  const w=histogram(frame.cells.map(c=>c.windSpeed));
+  makeChart("windChart","bar",{
+    labels:w.labels,
+    datasets:[{data:w.counts,backgroundColor:"#42d6a4",borderRadius:3}]
+  });
+}
+
+/* ============================================================
+   TIME CONTROLS
+============================================================ */
+
+function showFrame(index) {
+  if(!frames.length) return;
+  activeIndex=Math.max(0,Math.min(frames.length-1,index));
+  renderMap();
+  updateAnalytics();
+}
+
+function stopAnimation() {
+  if(animationTimer) clearInterval(animationTimer);
+  animationTimer=null;
+  $("playBtn").textContent="▶";
+}
+
+function playAnimation() {
+  if(!frames.length) return;
+  if(animationTimer) {
+    stopAnimation();
+    return;
+  }
+
+  $("playBtn").textContent="Ⅱ";
+  animationTimer=setInterval(()=>{
+    if(activeIndex>=frames.length-1) {
+      stopAnimation();
+      return;
+    }
+    showFrame(activeIndex+1);
+  },Number($("speedSelect").value));
+}
+
+$("playBtn").addEventListener("click",playAnimation);
+$("prevBtn").addEventListener("click",()=>showFrame(activeIndex-1));
+$("nextBtn").addEventListener("click",()=>showFrame(activeIndex+1));
+$("timeSlider").addEventListener("input",e=>showFrame(Number(e.target.value)));
+$("speedSelect").addEventListener("change",()=>{
+  if(animationTimer) {
+    stopAnimation();
+    playAnimation();
+  }
+});
+
+/* ============================================================
+   EXPORTS
+============================================================ */
+
+function downloadFile(filename,content,type) {
+  const blob=new Blob([content],{type});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download=filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function exportRows() {
+  const rows=[];
+  frames.forEach(frame=>{
+    frame.cells.forEach(c=>{
+      rows.push({
+        timestamp:frame.time,
+        latitude:c.latitude,
+        longitude:c.longitude,
+        temperature_850hPa_c:c.temperature,
+        wind_speed_850hPa_kmh:c.windSpeed,
+        wind_direction_850hPa_deg:c.windDirection,
+        relative_humidity_850hPa_pct:c.humidity,
+        geopotential_height_850hPa_m:c.height,
+        temperature_gradient_K_per_1000km:c.gradient,
+        kinematic_frontogenesis_K_per_100km_per_3h:c.frontogenesis
+      });
+    });
+  });
+  return rows;
+}
+
+$("csvBtn").addEventListener("click",()=>{
+  const rows=exportRows();
+  if(!rows.length) return;
+  const headers=Object.keys(rows[0]);
+  const csv=[headers.join(",")].concat(
+    rows.map(row=>headers.map(h=>{
+      const v=row[h];
+      return v===null || v===undefined ? "" : String(v);
+    }).join(","))
+  ).join("\n");
+  downloadFile("atmospheric_frontogenesis_850hPa.csv",csv,"text/csv");
+});
+
+$("jsonBtn").addEventListener("click",()=>{
+  const payload={
+    title:"Atmospheric Frontogenesis Intelligence",
+    requested_model:MODELS[currentModel].label,
+    confirmed_model:null,
+    source:"Open-Meteo Historical Forecast API",
+    domain:currentDomain,
+    timestamps,
+    records:exportRows(),
+    methodology:"Simplified horizontal kinematic frontogenesis approximation."
+  };
+  downloadFile("atmospheric_frontogenesis_850hPa.json",JSON.stringify(payload,null,2),"application/json");
+});
+
+$("geojsonBtn").addEventListener("click",()=>{
+  const features=[];
+  frames.forEach(frame=>{
+    frame.cells.forEach(c=>{
+      features.push({
+        type:"Feature",
+        geometry:{type:"Point",coordinates:[c.longitude,c.latitude]},
+        properties:{
+          timestamp:frame.time,
+          temperature_850hPa:c.temperature,
+          wind_speed_850hPa:c.windSpeed,
+          wind_direction_850hPa:c.windDirection,
+          relative_humidity_850hPa:c.humidity,
+          geopotential_height_850hPa:c.height,
+          temperature_gradient:c.gradient,
+          frontogenesis:c.frontogenesis
+        }
+      });
+    });
+  });
+
+  downloadFile(
+    "atmospheric_frontogenesis_850hPa.geojson",
+    JSON.stringify({type:"FeatureCollection",features},null,2),
+    "application/geo+json"
+  );
+});
+
+/* ============================================================
+   RUN ANALYSIS
+============================================================ */
+
+async function runAnalysis() {
+  stopAnimation();
+  clearMapLayers();
+
+  $("runBtn").disabled=true;
+  $("runBtn").textContent="PROCESSING…";
+  $("csvBtn").disabled=true;
+  $("jsonBtn").disabled=true;
+  $("geojsonBtn").disabled=true;
+
+  records=[];
+  frames=[];
+  timestamps=[];
+  activeIndex=0;
+
+  updateSourcePanel();
+  setStatus("Loading…");
+  setConnection(false,"REQUEST IN PROGRESS");
+  setProcessing("Preparing atmospheric request…");
+  setProgress("");
+
+  try {
+    const model=$("modelSelect").value;
+    const start=$("startDate").value;
+    const end=$("endDate").value;
+    const domain=getDomain();
+    const spacing=Number($("gridResolution").value);
+
+    if(!start || !end) throw new Error("Select both start and end dates.");
+    if(new Date(start)>new Date(end)) throw new Error("Start date must not be after end date.");
+    if(domain.north<=domain.south || domain.east<=domain.west) {
+      throw new Error("Invalid geographic bounding box.");
+    }
+
+    const duration=(new Date(end)-new Date(start))/86400000;
+    if(duration>7) {
+      throw new Error("For performance, select a period of 7 days or less.");
+    }
+
+    const points=generateGrid(domain,spacing);
+    if(points.length>700) {
+      throw new Error("The selected grid has "+points.length+" points. Increase grid spacing or reduce the study area.");
+    }
+
+    currentDomain=domain;
+    setProcessing("Requesting "+points.length+" atmospheric grid locations…");
+
+    map.fitBounds([[domain.south,domain.west],[domain.north,domain.east]]);
+
+    const retrieved=await retrieveAll(points,model,start,end);
+
+    if(!retrieved.length) throw new Error("No data was returned for the selected domain.");
+
+    records=retrieved;
+    buildFrames(records);
+
+    if(!frames.length || !timestamps.length) {
+      throw new Error("No usable time steps were assembled.");
+    }
+
+    const confirmedNames=[...new Set(records.map(r=>r.responseModel).filter(Boolean))];
+
+    $("confirmedModel").textContent=confirmedNames.length===1
+      ? confirmedNames[0]
+      : "Not independently confirmed";
+    $("confirmedModel").className="source-value "+(confirmedNames.length ? "status ok":"status");
+
+    $("integrityModel").textContent=confirmedNames.length
+      ? confirmedNames.join(", ")
+      : "Not supplied by API";
+
+    // Successful retrieval is not the same as model confirmation.
+    setStatus("Retrieved successfully","ok");
+    setConnection(true,"DATA RETRIEVED");
+
+    $("timeSlider").max=frames.length-1;
+    $("timeSlider").value=0;
+    $("timeSlider").disabled=false;
+    $("playBtn").disabled=false;
+    $("prevBtn").disabled=false;
+    $("nextBtn").disabled=false;
+
+    $("csvBtn").disabled=false;
+    $("jsonBtn").disabled=false;
+    $("geojsonBtn").disabled=false;
+
+    showFrame(0);
+
+    setProcessing("Analysis completed successfully.");
+    setProgress(
+      records.length+" locations retrieved • "+
+      timestamps.length+" time steps • "+
+      frames.length+" frames"
+    );
+
+  } catch(error) {
+    console.error(error);
+    setStatus("Failed — "+error.message,"fail");
+    setConnection(false,"DATA REQUEST FAILED");
+    setProcessing("Analysis could not be completed.");
+    setProgress(error.message);
+  } finally {
+    $("runBtn").disabled=false;
+    $("runBtn").textContent="▶ RUN ATMOSPHERIC ANALYSIS";
+  }
+}
+
+$("runBtn").addEventListener("click",runAnalysis);
+
+/* ============================================================
+   DISPLAY CONTROLS
+============================================================ */
+
+["fieldSelect","showWind","showHotspots","showGrid","opacity"].forEach(id=>{
+  $(id).addEventListener("change",()=>{
+    if(frames.length) renderMap();
+  });
+});
+
+$("opacity").addEventListener("input",()=>{
+  if(frames.length) renderMap();
+});
+
+$("resetBtn").addEventListener("click",()=>{
+  stopAnimation();
+  clearMapLayers();
+
+  records=[];
+  frames=[];
+  timestamps=[];
+  activeIndex=0;
+
+  $("modelSelect").value="ecmwf_ifs025";
+  $("regionSelect").value="med";
+  $("gridResolution").value="1.5";
+  $("fieldSelect").value="frontogenesis";
+  $("startDate").value="2026-11-10";
+  $("endDate").value="2026-11-12";
+  $("north").value=55;
+  $("south").value=25;
+  $("west").value=-15;
+  $("east").value=40;
+
+  $("showWind").checked=true;
+  $("showHotspots").checked=true;
+  $("showGrid").checked=false;
+  $("timeSlider").value=0;
+  $("timeSlider").max=0;
+  $("timeSlider").disabled=true;
+
+  ["playBtn","prevBtn","nextBtn","csvBtn","jsonBtn","geojsonBtn"].forEach(id=>$(id).disabled=true);
+
+  $("kpiPoints").textContent="—";
+  $("kpiTimes").textContent="—";
+  $("kpiFront").textContent="—";
+  $("kpiWind").textContent="—";
+
+  ["mTemp","mGradient","mHumidity","mHeight","mMaxWind","mHotspots"].forEach(id=>$(id).textContent="—");
+
+  Object.values(charts).forEach(c=>c.destroy());
+  charts={};
+
+  updateSourcePanel();
+  setConnection(true,"API READY");
+  setProcessing("Waiting for analysis request.");
+  setProgress("");
+  $("mapTitle").textContent="850 hPa Atmospheric Analysis";
+  $("mapSubtitle").textContent="Waiting for model data";
+  $("timeLabel").textContent="No data loaded";
+
+  map.setView([40,12],4);
+  setBasemap($("basemapSelect").value);
+});
+
+/* ============================================================
+   START APPLICATION
+============================================================ */
+
+initMap();
+updateSourcePanel();
+setConnection(true,"API READY");
 </script>
 </body>
 </html>
